@@ -1,0 +1,74 @@
+##
+ # Build instructions.
+ ##
+
+[build]
+	base = "/"
+	publish = "dist"
+	command = "npm run build"
+
+##
+ # Headers.
+ ##
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+
+##
+ # Redirects: Default subdomain.
+ ##
+
+[[redirects]]
+	from = "http://pshry.netlify.app"
+	to = "https://www.paulshryock.dev/"
+	status = 301
+	force = true
+
+[[redirects]]
+	from = "http://pshry.netlify.app/*"
+	to = "https://www.paulshryock.dev/:splat"
+	status = 301
+	force = true
+
+[[redirects]]
+	from = "https://pshry.netlify.app"
+	to = "https://www.paulshryock.dev/"
+	status = 301
+	force = true
+
+[[redirects]]
+	from = "https://pshry.netlify.app/*"
+	to = "https://www.paulshryock.dev/:splat"
+	status = 301
+	force = true
+
+##
+ # Redirects: Social media.
+ ##
+
+[[redirects]]
+	from = "/behance"
+	to = "https://www.behance.net/pshry"
+	status = 301
+
+[[redirects]]
+	from = "/dribbble"
+	to = "https://dribbble.com/pshry"
+	status = 301
+
+[[redirects]]
+	from = "/github"
+	to = "https://github.com/paulshryock"
+	status = 301
+
+[[redirects]]
+	from = "/linkedin"
+	to = "https://www.linkedin.com/in/paulshryock"
+	status = 301
+
+[[redirects]]
+	from = "/twitter"
+	to = "https://twitter.com/paul_shryock"
+	status = 301
