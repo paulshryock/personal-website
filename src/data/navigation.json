@@ -1,0 +1,14 @@
+{
+  "primary": {
+    "items": [
+      {
+        "link": "/resume",
+        "label": "Resume"
+      },
+      {
+        "link": "/contact",
+        "label": "Contact"
+      }
+    ]
+  }
+}

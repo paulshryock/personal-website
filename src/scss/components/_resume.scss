@@ -1,0 +1,282 @@
+.resume {
+  display: grid;
+  gap: 4rem;
+  grid-template-areas:
+    "experience"
+    "skills"
+    "education"
+    "links";
+  grid-template-columns: 100%;
+  place-content: start;
+  place-items: start;
+
+  @media screen and (min-width: 75em), print {
+    grid-template-areas:
+      "experience skills"
+      "education links";
+    grid-template-columns: calc(8em + 75ch) 1fr;
+  }
+
+  @media print {
+    gap: 1rem;
+  }
+
+  &__layout {
+    @media print {
+      a {
+        text-decoration: none;
+      }
+
+      .masthead {
+        &::after {
+          content: "paul@pshry.com";
+        }
+      }
+
+      .content__title {
+        display: none;
+      }
+
+      .colophon {
+        display: none;
+      }
+    }
+  }
+
+  &__title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-block-end: 1em;
+  }
+
+  &__experience {
+    grid-area: experience;
+
+    @media print {
+      a {
+        color: var(--black);
+      }
+    }
+
+    &-list {
+      display: flex;
+      flex-flow: column wrap;
+      gap: 2em;
+      list-style: none;
+      max-width: 100%;
+      padding-inline-start: 0;
+
+      @media print {
+        gap: 1rem;
+      }
+    }
+
+    &-list + &-cta {
+      margin-block-start: 2rem;
+    }
+
+    &-item {
+      display: grid;
+      grid-template-areas:
+        "duration duration"
+        "position position"
+        ". description"
+        ". accomplishments";
+      grid-template-columns: 1em 1fr;
+
+      @media screen and (min-width: 37.5em), print {
+        grid-template-areas:
+          "duration position"
+          ". description"
+          ". accomplishments";
+        grid-template-columns: 8em 1fr;
+      }
+    }
+
+    &-duration {
+      font-size: 0.875em;
+      grid-area: duration;
+    }
+
+    &-position {
+      color: currentcolor;
+      grid-area: position;
+    }
+
+    &-role {
+      display: block;
+      font-weight: 700;
+
+      @media screen and (min-width: 37.5em), print {
+        display: inline;
+      }
+
+      &::after {
+        @media screen and (min-width: 37.5em), print {
+          content: "@";
+          font-weight: 400;
+          margin: 0 0.25em;
+        }
+      }
+    }
+
+    &-employer {
+      white-space: nowrap;
+    }
+
+    &-description {
+      grid-area: description;
+      margin: 0.75em 0;
+    }
+
+    &-accomplishment {
+      &s {
+        grid-area: accomplishments;
+        list-style-type: disc;
+        padding-inline-start: 1em;
+
+        & & {
+          list-style-type: circle;
+        }
+      }
+    }
+  }
+
+  &__skills {
+    grid-area: skills;
+
+    &-list {
+      display: grid;
+      gap: 2em;
+      grid-template-columns: 100%;
+      list-style: none;
+      max-width: calc(8em + 75ch);
+      padding-inline-start: 0;
+
+      @media screen and (min-width: 48em), print {
+        grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
+      }
+
+      @media screen and (min-width: 75em), print {
+        grid-template-columns: 30ch;
+      }
+
+      @media print {
+        gap: 1rem;
+      }
+    }
+
+    &-item {
+      font-weight: 700;
+    }
+  }
+
+  &__tools {
+    &-list {
+      display: flex;
+      flex-wrap: wrap;
+      font-weight: 400;
+      list-style: none;
+      padding-inline-start: 1em;
+    }
+
+    &-item {
+      &::after {
+        content: ", ";
+        margin-inline-end: 0.25em;
+      }
+
+      &:last-child::after {
+        content: none;
+        margin-inline-end: 0;
+      }
+    }
+  }
+
+  &__education {
+    grid-area: education;
+
+    @media print {
+      a {
+        color: var(--black);
+      }
+    }
+
+    &-list {
+      display: flex;
+      flex-flow: column wrap;
+      gap: 2rem;
+      list-style: none;
+      max-width: calc(8em + 75ch);
+      padding-inline-start: 0;
+
+      @media screen and (min-width: 48em), print {
+        gap: 0;
+      }
+    }
+
+    &-list + &-cta {
+      margin-block-start: 2rem;
+    }
+
+    &-item {
+      display: grid;
+      grid-template-areas:
+        "duration duration"
+        ". school"
+        ". field";
+      grid-template-columns: 1em 1fr;
+
+      @media screen and (min-width: 37.5em) {
+        grid-template-areas:
+          "duration school"
+          ". field";
+        grid-template-columns: 8em 1fr;
+      }
+
+      @media screen and (min-width: 48em) {
+        grid-template-areas: "duration school field";
+        grid-template-columns: 8em auto 1fr;
+      }
+
+      @media print {
+        grid-template-areas: "duration school field";
+        grid-template-columns: 8em auto 1fr;
+      }
+    }
+
+    &-duration {
+      font-size: 0.875em;
+      grid-area: duration;
+    }
+
+    &-school {
+      grid-area: school;
+    }
+
+    &-field {
+      grid-area: field;
+    }
+
+    &-school + &-field {
+      &::before {
+        @media screen and (min-width: 48em), print {
+          content: ", ";
+        }
+      }
+    }
+  }
+
+  &__links {
+    grid-area: links;
+
+    &-list {
+      display: flex;
+      flex-flow: column wrap;
+      gap: 0;
+      list-style: none;
+      max-width: 35ch;
+      padding-inline-start: 0;
+    }
+  }
+}

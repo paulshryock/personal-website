@@ -1,0 +1,22 @@
+.layout-resume {
+  @media print {
+    a {
+      text-decoration: none;
+    }
+
+    .masthead {
+      &::after {
+        color: linktext;
+        content: "paul@pshry.com";
+      }
+    }
+
+    .content__title {
+      display: none;
+    }
+
+    .colophon {
+      display: none;
+    }
+  }
+}
