@@ -1,0 +1,18 @@
+---
+layout: scaffold
+---
+{% render 'masthead', site: site, navigation: navigation %}
+<main class="content" aria-labelledby="content-title">
+	<article>
+	  {% if title %}
+	  <header class="content__header">
+	    <h1 class="content__title" id="content-title">{{ page_title | default: title | strip | strip_html }}</h1>
+
+	    <p class="content__summary">{{ summary | default: description }}</p>
+	  </header>
+	  {% endif %}
+
+	  {{ content }}
+	</article>
+</main>
+{% render 'colophon', copyright: site.copyright %}

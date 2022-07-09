@@ -1,0 +1,33 @@
+/* todo: import globs.
+
+/* Variables */
+@import "variables/_colors.scss";
+
+/* Reset */
+@import "reset/_joshwcomeau.scss";
+
+/* Vendor */
+
+/* Elements */
+@import "elements/_a.scss";
+@import "elements/_body.scss";
+@import "elements/_h.scss";
+@import "elements/_ol.scss";
+@import "elements/_p.scss";
+@import "elements/_root.scss";
+@import "elements/_ul.scss";
+
+/* Layouts */
+@import "layouts/_page.scss";
+@import "layouts/_resume.scss";
+
+/* Components */
+@import "components/_branding.scss";
+@import "components/_button.scss";
+@import "components/_colophon.scss";
+@import "components/_content.scss";
+@import "components/_masthead.scss";
+@import "components/_navigation.scss";
+@import "components/_resume.scss";
+
+/* Utilities */

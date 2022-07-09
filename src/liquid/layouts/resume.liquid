@@ -1,0 +1,113 @@
+---
+layout: scaffold
+---
+{% render 'masthead', site: site, navigation: navigation %}
+<main class="content" aria-labelledby="content-title">
+	<article>
+	  {% if page_title or title %}
+	  <header class="content__header">
+	    {%- if page.url == '/' %}
+	    <h2 class="content__title" id="content-title">{{ page_title | default: title | strip | strip_html }}</h2>
+	    {%- else %}
+	    <h1 class="content__title" id="content-title">{{ page_title | default: title | strip | strip_html }}</h1>
+	    {%- endif %}
+
+	    <p class="content__summary">{{ summary | default: description }}</p>
+	  </header>
+	  {% endif %}
+
+	  {%- if resume.experience %}
+	    <div class="resume">
+	      {%- if resume.experience %}
+	        <section class="resume__experience">
+	          <h2 class="resume__title">Recent work experience</h2>
+	          <ol class="resume__experience-list">
+	            {%- for item in resume.experience %}
+	              {%- unless forloop.index > 3 %}
+	                <li class="resume__experience-item">
+	                  <span class="resume__experience-duration">
+	                    {{ item.duration.from }}&thinsp;&ndash;&thinsp;{{ item.duration.to }}
+	                  </span>
+	                  <h3 class="resume__experience-position">
+	                    <span class="resume__experience-role">{{ item.role }}</span>
+	                    {%- if item.link %}<a href="{{ item.link }}">{%- endif %}<span class="resume__experience-employer">{{ item.employer }}</span>{%- if item.link %}</a>{%- endif %}
+	                  </h3>
+	                  {%- if item.description %}
+	                    <p class="resume__experience-description">{{ item.description }}</p>
+	                  {%- endif %}
+	                  {%- if item.accomplishments %}
+	                    <ul class="resume__experience-accomplishments">
+	                      {%- for accomplishment in item.accomplishments %}
+	                        <li>{{ accomplishment }}</li>
+	                      {%- endfor %}
+	                    </ul>
+	                  {%- endif %}
+	                </li>
+	              {%- endunless %}
+	            {%- endfor %}
+	          </ol>
+	        </section>
+	      {%- endif %}
+	      {%- if resume.skills %}
+	        <section class="resume__skills">
+	          <h2 class="resume__title">Tools</h2>
+	          <ul class="resume__skills-list">
+	            {%- for item in resume.skills %}
+	              <li class="resume__skills-item">
+	                <span class="resume__skills-type">{{ item.type }}</span>
+	                {%- if item.tools %}
+	                  <ul class="resume__tools-list">
+	                    {%- for tool in item.tools %}
+	                      <li class="resume__tools-item">{{ tool }}</li>
+	                    {%- endfor %}
+	                  </ul>
+	                {%- endif %}
+	              </li>
+	            {%- endfor %}
+	          </ul>
+	        </section>
+	      {%- endif %}
+	      {%- if resume.education %}
+	        <section class="resume__education">
+	          <h2 class="resume__title">Education</h2>
+	          <ol class="resume__education-list">
+	            {%- for item in resume.education %}
+	              {%- if item.school %}
+	                <li class="resume__education-item">
+	                  <span class="resume__education-duration">
+	                    {{ item.duration.from }}&thinsp;&ndash;&thinsp;{{ item.duration.to }}
+	                  </span>
+	                  <span class="resume__education-school">
+	                    {%- if item.url %}<a href="{{ item.url }}">{%- endif %}
+	                      <b>{{ item.school }}</b>
+	                    {%- if item.url %}</a>{%- endif %}
+	                  </span>
+	                  {%- if item.field %}
+	                    <span class="resume__education-field">
+	                      {{ item.field }}
+	                    </span>
+	                  {%- endif %}
+	                </li>
+	              {%- endif %}
+	            {%- endfor %}
+	          </ol>
+	        </section>
+	      {%- endif %}
+	      {%- if links %}
+	        <section class="resume__links">
+	          <h2 class="resume__title">Links</h2>
+	          <ul class="resume__links-list">
+	            {%- for item in links %}
+	              <li class="resume__link-item">
+	                <b>{{ item.label }}:</b>
+	                <a href="{{ item.link }}">{{ item.link_short }}</a>
+	              </li>
+	            {%- endfor %}
+	          </ul>
+	        </section>
+	      {%- endif %}
+	    </div>
+	  {%- endif %}
+	</article>
+</main>
+{% render 'colophon', copyright: site.copyright %}

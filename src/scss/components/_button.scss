@@ -1,0 +1,32 @@
+.button {
+  background: selecteditem;
+  border: none;
+  border-radius: 0.25rem;
+  color: selecteditemtext;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1;
+  padding: 1em 1em 0.75em;
+  text-decoration: none;
+  transition: all 200ms ease;
+  width: auto;
+
+  &:link,
+  &:visited {
+    background: selecteditem;
+    color: selecteditemtext;
+  }
+
+  &:hover,
+  &:focus {
+    background: selecteditem;
+    color: selecteditemtext;
+    filter: brightness(115%) saturate(1.25);
+  }
+
+  &:active {
+    background: selecteditem;
+    color: selecteditemtext;
+    filter: brightness(150%) saturate(1.5);
+  }
+}
