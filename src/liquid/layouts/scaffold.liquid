@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ seo_title | default: title | default: site.title | strip | strip_html | truncate: 60 }}</title>
+
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+  <meta name="description" content="{{ description | default: content | strip | strip_html | truncate: 160 }}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="{{ site.colors.primary }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>{{ site.emoji }}</text></svg>" />
+</head>
+<body class="site layout-{{ layout | default: 'skeleton' }} {{ content_type | default: 'skeleton' }}-{{ title | default: 'default' | slugify }}">
+  {{ content }}
+  <script defer src="/js/main.js" type="module"></script>
+  <script defer src="/js/main-legacy.min.js" nomodule></script>
+</body>
+</html>

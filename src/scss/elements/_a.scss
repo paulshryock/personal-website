@@ -1,0 +1,24 @@
+a {
+  color: currentcolor;
+  text-decoration: underline solid 0.125rem linktext;
+  text-underline-offset: 0.1875rem;
+
+  @media print {
+    color: linktext;
+    text-decoration: none;
+  }
+
+  &:link,
+  &:visited {
+    text-decoration-color: linktext;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration-color: visitedtext;
+  }
+
+  &:active {
+    text-decoration-color: activetext;
+  }
+}
