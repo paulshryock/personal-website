@@ -56,7 +56,7 @@ const esbuildWatch: boolean | esbuild.WatchMode = WATCH
 						warnings.forEach((w: EsbuildMessage) => console.warn(w))
 					}
 				} else if (result) {
-					(async () => {
+					;(async () => {
 						// Transpile ES2015 to ES5 for legacy browsers.
 						await swc
 							.transform(await readFile('dist/js/main.js', 'utf8'), {
@@ -92,7 +92,7 @@ const esbuildWatch: boolean | esbuild.WatchMode = WATCH
  */
 async function compileSass(): Promise<
 	void | [undefined | void, undefined | void]
-	> {
+> {
 	return Promise.all([
 		postcss([
 			postcssEasyImport({
