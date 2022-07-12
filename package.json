@@ -15,18 +15,18 @@
   "author": "Paul Shryock <paul@pshry.com> (https://github.com/paulshryock)",
   "type": "module",
   "scripts": {
-    "build": "run-s quality compile test:acceptance",
+    "build": "run-s compile test:acceptance",
     "bump": "release-bump -epq",
     "clean": "rm -rf dist",
     "precompile": "npm run clean",
     "compile": "ts-node ./bin/compile.ts",
-    "predeploy": "npm run build",
     "deploy": "netlify deploy",
     "format": "prettier --loglevel=warn --write \"./**/*.{{t,j}s,{m,c}{t,j}s,json}\"",
     "lint": "run-p lint:*",
     "lint:css": "npx stylelint \"src/scss/**/*.scss\" --fix",
     "lint:js": "eslint \"./**/*.{ts,d.ts,js,{m,c}js,json}\" --config=eslint.config.cjs --fix",
     "lint:pkg": "sort-package-json",
+    "lint:yaml": "yaml-validator .github/workflows/*.yml",
     "prepare": "husky install bin/husky",
     "prerelease": "touch .env && source .env",
     "quality": "npm-run-all --serial format --parallel lint typecheck test:unit",
@@ -41,7 +41,7 @@
     "typecheck": "tsc",
     "typecheck:watch": "npm run typecheck -- --watch",
     "preversion": "if [[ $(git status -s) ]]; then exit 1; fi",
-    "version": "run-s build bump && git add ."
+    "version": "npm run bump && git add ."
   },
   "browserslist": [
     "defaults"
@@ -84,7 +84,8 @@
     "stylelint-config-standard-scss": "4.0.0",
     "ts-jest": "28.0.6",
     "ts-node": "10.9.1",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "yaml-validator": "4.0.0"
   },
   "engines": {
     "node": ">=14.0.0"
