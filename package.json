@@ -1,6 +1,6 @@
 {
   "name": "@paulshryock/personal-website",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.5",
   "private": true,
   "description": "Paul Shryock's personal website.",
   "homepage": "https://github.com/paulshryock/personal-website#readme",
@@ -15,12 +15,11 @@
   "author": "Paul Shryock <paul@pshry.com> (https://github.com/paulshryock)",
   "type": "module",
   "scripts": {
-    "build": "run-s quality compile test:acceptance",
+    "build": "run-s compile test:acceptance",
     "bump": "release-bump -epq",
     "clean": "rm -rf dist",
     "precompile": "npm run clean",
     "compile": "ts-node ./bin/compile.ts",
-    "predeploy": "npm run build",
     "deploy": "netlify deploy",
     "format": "prettier --loglevel=warn --write \"./**/*.{{t,j}s,{m,c}{t,j}s,json}\"",
     "lint": "run-p lint:*",
@@ -41,7 +40,7 @@
     "typecheck": "tsc",
     "typecheck:watch": "npm run typecheck -- --watch",
     "preversion": "if [[ $(git status -s) ]]; then exit 1; fi",
-    "version": "run-s build bump && git add ."
+    "version": "run-s quality build bump && git add ."
   },
   "browserslist": [
     "defaults"
