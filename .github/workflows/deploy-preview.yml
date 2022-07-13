@@ -11,38 +11,35 @@ jobs:
     name: 'Deploy preview'
     runs-on: ubuntu-latest
     steps:
-      - name: Debug 3
-        run: echo 'This step will always run'
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Debug 2
-        run: echo 'beta'
-        if: ${{ contains( github.ref, 'beta' ) }}
+      - name: Setup Node
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
 
-      - name: Debug 1
-        run: echo 'alpha, beta, rc'
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile source code
+        run: npm run compile
+
+      - name: Run acceptance tests
+        run: npm run test:acceptance
+
+      - name: Deploy preview
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npm run deploy -- --message=${GITHUB_REF##*/}
         if: ${{ contains( github.ref, 'alpha' ) || contains( github.ref, 'beta' ) || contains( github.ref, 'rc' ) }}
 
-      # - name: Checkout repository
-      #   uses: actions/checkout@v3
-
-      # - name: Setup Node
-      #   uses: actions/setup-node@v3.3.0
-      #   with:
-      #     node-version-file: .nvmrc
-      #     cache: npm
-      #     cache-dependency-path: package-lock.json
-
-      # - name: Install dependencies
-      #   run: npm ci
-
-      # - name: Compile source code
-      #   run: npm run compile
-
-      # - name: Run acceptance tests
-      #   run: npm run test:acceptance
-
-      # - name: Deploy preview
-      #   env:
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #   run: npm run deploy -- --message=${GITHUB_REF##*/}
+      - name: Deploy to production
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npm run deploy -- --prod
+        if: ${{ contains( github.ref, 'alpha' ) == false && contains( github.ref, 'beta' ) == false && contains( github.ref, 'rc' ) == false }}
