@@ -15,8 +15,8 @@ jobs:
         run: echo 'This step will always run'
 
       - name: Debug 2
-        run: echo 'alpha'
-        if: ${{ contains( github.ref, 'alpha' ) }}
+        run: echo 'beta'
+        if: ${{ contains( github.ref, 'beta' ) }}
 
       - name: Debug 1
         run: echo 'alpha, beta, rc'
