@@ -3,6 +3,7 @@ name: Deploy preview
 on:
   push:
     tags:
+      - v*
 
 jobs:
 
@@ -12,9 +13,14 @@ jobs:
     steps:
       - name: Debug 1
         run: echo ${GITHUB_REF##*/}
+        if: {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
 
       - name: Debug 2
-        run: echo {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
+        run: echo 'alpha'
+        if: {{ contains( ${GITHUB_REF##*/}, 'alpha' ) }}
+
+      - name: Debug 3
+        run: echo 'always'
 
       # - name: Checkout repository
       #   uses: actions/checkout@v3
