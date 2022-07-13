@@ -12,15 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug 1
-        run: echo 'Debug 1'
+        run: echo "Debug 1"
         if: {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
 
       - name: Debug 2
-        run: echo 'alpha'
+        run: echo "alpha"
         if: {{ contains( ${GITHUB_REF##*/}, 'alpha' ) }}
 
       - name: Debug 3
-        run: echo 'always'
+        run: echo "always"
 
       # - name: Checkout repository
       #   uses: actions/checkout@v3
