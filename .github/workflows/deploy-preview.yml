@@ -2,7 +2,7 @@ name: Deploy preview
 
 on:
   push:
-    tags:
+    branches: []
 
 jobs:
 
@@ -20,17 +20,26 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Debug 1
+        run: echo {{ GITHUB_REF##*/ }}
 
-      - name: Compile source code
-        run: npm run compile
+      - name: Debug 2
+        run: echo {{ $GITHUB_REF##*/ }}
 
-      - name: Run acceptance tests
-        run: npm run test:acceptance
+      - name: Debug 3
+        run: echo {{ ${GITHUB_REF##*/} }}
 
-      - name: Deploy preview
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npm run deploy -- --message=${GITHUB_REF##*/}
+      # - name: Install dependencies
+      #   run: npm ci
+
+      # - name: Compile source code
+      #   run: npm run compile
+
+      # - name: Run acceptance tests
+      #   run: npm run test:acceptance
+
+      # - name: Deploy preview
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      #   run: npm run deploy -- --message=${GITHUB_REF##*/}
