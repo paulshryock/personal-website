@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug 1
-        run: echo ${GITHUB_REF##*/}
+        run: echo '${GITHUB_REF##*/}'
         if: {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
 
       - name: Debug 2
