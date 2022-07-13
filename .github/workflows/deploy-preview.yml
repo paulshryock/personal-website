@@ -9,11 +9,12 @@ jobs:
   deploy:
     name: 'Deploy preview'
     runs-on: ubuntu-latest
-    if:
-      - {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
     steps:
-      - name: Debug
+      - name: Debug 1
         run: echo ${GITHUB_REF##*/}
+
+      - name: Debug 2
+        run: echo {{ contains( ${GITHUB_REF##*/}, 'alpha' ) || contains( ${GITHUB_REF##*/}, 'beta' ) || contains( ${GITHUB_REF##*/}, 'rc' ) }}
 
       # - name: Checkout repository
       #   uses: actions/checkout@v3
