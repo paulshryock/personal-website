@@ -16,7 +16,7 @@ jobs:
 
       - name: Debug 2
         run: echo 'alpha'
-        if: contains( $GITHUB_REF##*/, 'alpha' )
+        if: contains( ${GITHUB_REF##*/}, 'alpha' )
 
       - name: Debug 1
         run: echo 'alpha, beta, rc'
