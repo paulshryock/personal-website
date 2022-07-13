@@ -16,11 +16,11 @@ jobs:
 
       - name: Debug 2
         run: echo 'alpha'
-        if: ${{ contains( github.head_ref, 'alpha' ) }}
+        if: ${{ contains( github.ref, 'alpha' ) }}
 
       - name: Debug 1
         run: echo 'alpha, beta, rc'
-        if: ${{ contains( github.head_ref, 'alpha' ) || contains( github.head_ref, 'beta' ) || contains( github.head_ref, 'rc' ) }}
+        if: ${{ contains( github.ref, 'alpha' ) || contains( github.ref, 'beta' ) || contains( github.ref, 'rc' ) }}
 
       # - name: Checkout repository
       #   uses: actions/checkout@v3
