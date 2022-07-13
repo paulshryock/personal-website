@@ -40,7 +40,7 @@
     "typecheck": "tsc",
     "typecheck:watch": "npm run typecheck -- --watch",
     "preversion": "if [[ $(git status -s) ]]; then exit 1; fi",
-    "version": "run-s quality build bump && git add ."
+    "version": "npm run bump && git add ."
   },
   "browserslist": [
     "defaults"
