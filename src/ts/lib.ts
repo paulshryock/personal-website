@@ -17,7 +17,7 @@ export const userPreferences: UserPreferences = {
 /**
  * Adds media query change event listeners for each preference.
  *
- * @since unreleased
+ * @since 0.1.0
  */
 export function listenForPreferenceChanges(preferences: UserPreferences): void {
 	for (const value of Object.values(preferences)) {
@@ -31,7 +31,7 @@ export function listenForPreferenceChanges(preferences: UserPreferences): void {
 /**
  * Determines if a media query matches.
  *
- * @since  unreleased
+ * @since  0.1.0
  */
 export function mediaQueryMatches(query: string): boolean {
 	return (window.matchMedia && window.matchMedia(query)?.matches) === true
@@ -42,7 +42,7 @@ export function mediaQueryMatches(query: string): boolean {
  *
  * Updates <meta name='color-scheme' /> in the DOM.
  *
- * @since unreleased
+ * @since 0.1.0
  */
 export function setDarkMode(dark: boolean): void {
 	const fallback = document.createElement('meta')

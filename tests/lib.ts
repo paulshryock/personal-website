@@ -4,7 +4,7 @@ import { readdir } from 'fs/promises'
 /**
  * Gets all absolute paths of HTML files except for health check endpoint.
  *
- * @since  unreleased
+ * @since  0.1.0
  * @param  {string}            directory Relative directory path.
  * @return {Promise<string[]>}           Absolute file paths.
  */

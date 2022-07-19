@@ -87,7 +87,7 @@ const esbuildWatch: boolean | esbuild.WatchMode = WATCH
 /**
  * Compiles Sass into CSS.
  *
- * @since  unreleased
+ * @since  0.1.0
  * @return {Promise<void | [undefined | void, undefined | void]>}
  */
 async function compileSass(): Promise<
