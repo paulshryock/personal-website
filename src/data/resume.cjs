@@ -401,10 +401,6 @@ module.exports = function() {
 				label: 'LinkedIn',
 				link: 'linkedin.com/in/paulshryock',
 			},
-			{
-				label: 'Twitter',
-				link: 'twitter.com/paul_shryock',
-			},
 		],
 	}
 
