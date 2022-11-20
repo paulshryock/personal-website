@@ -74,8 +74,3 @@
 	from = "/linkedin"
 	to = "https://www.linkedin.com/in/paulshryock"
 	status = 301
-
-[[redirects]]
-	from = "/twitter"
-	to = "https://twitter.com/paul_shryock"
-	status = 301
