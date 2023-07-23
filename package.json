@@ -40,6 +40,10 @@
     "test:watch": "npm test -- --watch",
     "typecheck": "tsc",
     "typecheck:watch": "npm run typecheck -- --watch",
+    "upgrade:all": "ncu --upgrade",
+    "upgrade:dry-run": "ncu",
+    "upgrade:minor": "ncu --target=minor --upgrade",
+    "upgrade:patch": "ncu --target=patch --upgrade",
     "preversion": "if [[ $(git status -s) ]]; then exit 1; fi",
     "version": "npm run bump && git add ."
   },
