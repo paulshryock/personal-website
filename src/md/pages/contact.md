@@ -1,7 +1,7 @@
 ---
 seo_title: Connect with Paul Shryock online
 title: Contact Paul
-description: If you need an ethical software engineer to bring your Awesome Project™ to life, get in touch with Paul in one of the following ways.
+description: If you need a senior software engineer to bring your Awesome Project™ to life, get in touch with Paul in one of the following ways.
 slug: contact
 ---
 {%- if links %}
