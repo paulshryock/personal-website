@@ -1,6 +1,6 @@
 ---
-seo_title: Paul Shryock (he/him) | Ethical Software Engineer
-title: Ethical Software Engineer
+seo_title: Paul Shryock (he/him) | Senior Software Engineer
+title: Senior Software Engineer
 page_title: I'm on a mission to make software fast, secure, and accessible to everyone.
 description: I'm on a mission to make software fast, secure, and accessible to everyone. I build next-gen CMS experiences at the NBA to serve the best content to fans.
 summary: I build next-gen CMS experiences at the <a href="https://www.nba.com/">NBA</a> to serve the best content to fans. I develop digital products for the league, as well as for the <a href="https://www.wnba.com/">WNBA</a>, <a href="https://gleague.nba.com/">G League</a>, and <a href="https://2kleague.nba.com/">NBA 2K League</a>. I'm also a part-time Web Developer at <a href="https://www.palantir.com/">Palantir</a>, maintaining their public-facing marketing site.
