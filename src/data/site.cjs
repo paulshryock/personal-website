@@ -11,7 +11,7 @@ module.exports = function() {
 		emoji: BUILD_ENV === 'local' ? '🙂' : '🎉',
 		language: 'en-US',
 		pronouns: ['he', 'him'],
-		tagline: 'Ethical Software Engineer',
+		tagline: 'Senior Software Engineer',
 		title,
 	}
 }
