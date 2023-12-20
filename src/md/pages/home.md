@@ -14,10 +14,3 @@ I've helped Fortune 500 industry leaders, award-winning global agencies, and suc
 
 - I'm not interested in discussing new job opportunities</li>
 - I'm not accepting new consulting engagements</li>
-
-{%- if collections.articles %}
-### Articles
-{%- for item in collections.articles %}
-- [{{ item.data.title }}]({{ item.url }})
-{%- endfor %}
-{%- endif %}
