@@ -1,4 +1,4 @@
 {
-  "layout": "skeleton",
+  "layout": "page",
   "permalink": "./{{ slug }}/index.html"
 }
