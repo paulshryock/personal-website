@@ -1,11 +1,11 @@
 ---
 title: Software engineering daily practices
+seo_title: Software engineering daily practices for better outcomes
 description: Version control, trunk-based development, test-driven development, continuous integration, continuous delivery, pair programming.
+summary: Over the last decade and a half, I have found that these daily practices steer my work toward better outcomes.
 slug: software-engineering-daily-practices
 date: Last Modified
 ---
-
-Over the last decade and a half, I have found that these daily practices steer my work toward better outcomes.
 
 1. **[Version control](#version-control)**
 1. _Trunk-based development (coming soon)_
