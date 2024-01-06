@@ -1,4 +1,4 @@
-import { getAbsoluteFilePaths } from '../lib.js'
+import { getAbsoluteFilePaths } from './acceptance-utilities.js'
 import { readFile } from 'node:fs/promises'
 import { promisify } from 'node:util'
 import { gzip } from 'node:zlib'

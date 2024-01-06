@@ -1,5 +1,6 @@
 ---
 title: Software engineering daily practices
+description: Version control, trunk-based development, test-driven development, continuous integration, continuous delivery, pair programming.
 slug: software-engineering-daily-practices
 date: Last Modified
 ---

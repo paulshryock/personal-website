@@ -1,9 +1,9 @@
-import { getAbsoluteFilePaths } from '../lib.js'
+import { getAbsoluteFilePaths } from './acceptance-utilities.js'
 import { readFile } from 'fs/promises'
 import { parse } from 'node-html-parser'
 
 interface Context {
-	files?: string[]
+	htmlFiles?: string[]
 	navigation?: {
 		[key: string]: {
 			items: {
@@ -18,22 +18,21 @@ describe('seo', () => {
 	const context: Context = {}
 
 	beforeAll(async () => {
-		const files = (await getAbsoluteFilePaths('./dist')).filter((filePath) =>
-			filePath.match(/(?<!health-check\/index)\.html$/),
-		)
-		const navigation = JSON.parse(
-			await readFile('./src/data/navigation.json', 'utf8'),
-		)
-		Object.assign(context, { files, navigation })
+		const htmlFiles = (await getAbsoluteFilePaths('./dist'))
+			.filter((filePath) => filePath.match(/(?<!health-check\/index)\.html$/u))
+		const navigation =
+			JSON.parse(await readFile('./src/data/navigation.json', 'utf8'))
+
+		Object.assign(context, { htmlFiles, navigation })
 	})
 
 	it('has rendered at least 1 html file', () => {
-		expect(context?.files?.length).toBeGreaterThan(0)
+		expect(context?.htmlFiles?.length).toBeGreaterThan(0)
 	})
 
 	it('has rendered the home page', () => {
 		expect(
-			context?.files?.find((file) => file.match(/dist\/index\.html$/)),
+			context?.htmlFiles?.find((file) => file.match(/dist\/index\.html$/u)),
 		).not.toBeUndefined()
 	})
 
@@ -44,8 +43,8 @@ describe('seo', () => {
 
 	it('has pages for each navigation item', () => {
 		const actual =
-			context?.files?.map((file) => {
-				return file.replace(/.*\/dist(\/.*)\/index.html/, '$1')
+			context?.htmlFiles?.map((file) => {
+				return file.replace(/.*\/dist(\/.*)\/index.html$/u, '$1')
 			}) ?? []
 		const items =
 			context?.navigation?.primary?.items.map((item) => item.link) ?? []
@@ -55,10 +54,10 @@ describe('seo', () => {
 
 	it('has correct seo title and description lengths', async () => {
 		expect.hasAssertions()
-		expect.assertions(parseInt(`${context?.files?.length}`) * 3 * 2)
+		expect.assertions(parseInt(`${context?.htmlFiles?.length}`, 10) * 3 * 2)
 
 		await Promise.all([
-			...(context?.files?.map(async (file: string) => {
+			...(context?.htmlFiles?.map(async (file: string) => {
 				const content = parse(await readFile(file, 'utf8'))
 				const title = content?.querySelector('title')?.textContent ?? ''
 				const description =
@@ -79,7 +78,7 @@ describe('seo', () => {
 					},
 				]
 
-				metas.forEach((meta) => {
+				metas.forEach(async (meta) => {
 					expect(meta.content?.length).toBeGreaterThan(meta.lengths.min)
 					expect(meta.content?.length).toBeLessThan(meta.lengths.max)
 					expect(meta.content?.endsWith('...')).toBe(false)
