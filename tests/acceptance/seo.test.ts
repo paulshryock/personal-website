@@ -18,10 +18,12 @@ describe('seo', () => {
 	const context: Context = {}
 
 	beforeAll(async () => {
-		const htmlFiles = (await getAbsoluteFilePaths('./dist'))
-			.filter((filePath) => filePath.match(/(?<!health-check\/index)\.html$/u))
-		const navigation =
-			JSON.parse(await readFile('./src/data/navigation.json', 'utf8'))
+		const htmlFiles = (await getAbsoluteFilePaths('./dist')).filter(
+			(filePath) => filePath.match(/(?<!health-check\/index)\.html$/u),
+		)
+		const navigation = JSON.parse(
+			await readFile('./src/data/navigation.json', 'utf8'),
+		)
 
 		Object.assign(context, { htmlFiles, navigation })
 	})
