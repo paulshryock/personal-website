@@ -44,7 +44,6 @@
     "upgrade:dry-run": "ncu",
     "upgrade:minor": "ncu --target=minor --upgrade",
     "upgrade:patch": "ncu --target=patch --upgrade",
-    "preversion": "if [[ $(git status -s) ]]; then exit 1; fi",
     "version": "npm run bump && git add ."
   },
   "browserslist": [
