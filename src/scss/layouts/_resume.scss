@@ -1,4 +1,13 @@
 .layout-resume {
+
+  :where(&) .content__header {
+    margin-block-end: 2em;
+
+    :where(&) * + * {
+    margin-block-start: 1.5em;
+    }
+  }
+
   @media print {
     a {
       text-decoration: none;

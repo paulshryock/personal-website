@@ -22,7 +22,7 @@ module.exports = function() {
 				link: 'https://www.palantir.com/',
 				duration: {
 					from: '2018',
-					to: 'present',
+					to: '2023',
 				},
 				description: `Develops and maintains marketing website and microsites, ensuring rich editorial CMS workflows and smooth web experiences. Contributes high-quality code and supports new features with minimal direction.`,
 				accomplishments: [

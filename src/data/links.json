@@ -1,5 +1,10 @@
 [
   {
+    "label": "Website",
+    "link": "https://www.pshry.com/",
+    "link_short": "pshry.com"
+  },
+  {
     "label": "GitHub",
     "cta": "Check out Paul's code on GitHub",
     "link": "https://github.com/paulshryock/",
@@ -12,8 +17,9 @@
     "link_short": "linkedin.com/in/paulshryock"
   },
   {
-    "label": "Website",
-    "link": "https://www.pshry.com/",
-    "link_short": "pshry.com"
+    "label": "Mastodon",
+    "cta": "Chat with Paul on Mastodon",
+    "link": "https://phpc.social/@paulshryock",
+    "link_short": "phpc.social/@paulshryock"
   }
 ]

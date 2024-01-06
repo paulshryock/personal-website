@@ -1,15 +1,3 @@
-h1 {
-  :is(article &) {
-    font-size: 1.5em;
-  }
-}
-
-h2 {
-  :is(article &) {
-    font-size: 1.375em;
-  }
-}
-
 h1,
 h2,
 h3,
@@ -19,15 +7,5 @@ h6 {
   font: inherit;
   font-weight: 700;
   line-height: 1.2;
-  margin: 0 0 0.5em;
   max-width: 50ch;
-
-  :is(article &) {
-    color: visitedtext;
-    font-size: 1.375em;
-  }
-
-  :is(&:last-child) {
-    margin-block-end: 0;
-  }
 }

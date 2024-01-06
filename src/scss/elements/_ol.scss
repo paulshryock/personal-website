@@ -1,9 +1,4 @@
 ol {
-  margin-block-end: 1.5em;
   max-width: 75ch;
   padding-inline-start: 1em;
-
-  &:is(&:last-child) {
-    margin-block-end: 0;
-  }
 }

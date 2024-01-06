@@ -2,6 +2,10 @@
   "primary": {
     "items": [
       {
+        "link": "/articles",
+        "label": "Articles"
+      },
+      {
         "link": "/resume",
         "label": "Resume"
       },

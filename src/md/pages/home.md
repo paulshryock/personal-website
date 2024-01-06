@@ -9,8 +9,3 @@ slug: .
 Previously, I led front end development on the Visual Communications team at Realogy, where I built internal and public-facing websites and apps for corporate teams and served leading real estate brands like <a href="https://www.coldwellbanker.com/">Coldwell Banker</a>, <a href="https://www.sothebysrealty.com/">Sotheby's</a>, and <a href="https://www.century21.com/">Century 21</a>. Some other clients I've worked for include <a href="https://www.jnj.com/">Johnson & Johnson</a>, <a href="https://www.novartis.com/">Novartis</a>, <a href="https://us.gsk.com/en-us/home/">GlaxoSmithKline</a>, <a href="https://www.pfizer.com/">Pfizer</a>, <a href="https://www.astrazeneca.com/">AstraZeneca</a>, and <a href="https://www.novonordisk.com/">Novo Nordisk</a>.
 
 I've helped Fortune 500 industry leaders, award-winning global agencies, and successful small businesses build accessible, secure websites and applications <a href="https://pshry.com/resume/">since 2009</a>.
-
-## Status: Not Seeking New Roles (as of Q3 2020)
-
-- I'm not interested in discussing new job opportunities</li>
-- I'm not accepting new consulting engagements</li>

@@ -1,6 +1,12 @@
 .content {
   padding: 2rem 1rem;
 
+  &__header {
+    :where(&) .beard {
+      font-family: var(--font-stack-monospace);
+    }
+  }
+
   @media screen and (min-width: 37.5em) {
     padding: 2rem;
   }
@@ -9,31 +15,20 @@
     padding: 1rem 0;
   }
 
-  &__header {
-    margin-block-end: 2rem;
-  }
-
-  :where(&) h2,
-  &__title {
-    background: linear-gradient(to bottom right, visitedtext, activetext);
-    background-clip: text;
+  :where(&) :is(h1) {
     font-size: 2em;
-    font-weight: 700;
-    margin-block-end: 0.5em;
-    text-fill-color: transparent;
-    -webkit-text-fill-color: transparent;
+    max-width: 40ch;
   }
 
-  &__summary {
+  :where(&) :is(h2) {
+    font-size: 1.5em;
+  }
+
+  :where(&) :is(h3) {
     font-size: 1.25em;
   }
-}
 
-:where(.content) h3,
-:where(.content) h4,
-:where(.content) h5,
-:where(.content) h6 {
-  font-size: 1.5em;
-  font-weight: 700;
-  margin-block-end: 0.5em;
+  :where(&) :is(h4, h5, h6) {
+    font-size: 1.125em;
+  }
 }
