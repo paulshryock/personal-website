@@ -47,8 +47,3 @@ h5,
 h6 {
   overflow-wrap: break-word;
 }
-
-#root,
-#__next { /* stylelint-disable-line selector-id-pattern */
-  isolation: isolate;
-}
