@@ -185,10 +185,6 @@ await Promise.all([
 			await swc
 				.transform(await readFile('dist/js/main.js', 'utf8'), {
 					filename: '../../src/ts/main.ts',
-					isModule: false,
-					jsc: {
-						target: 'es5',
-					},
 					minify: true,
 					sourceMaps: true,
 				})
