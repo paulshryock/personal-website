@@ -2,7 +2,7 @@ module.exports = function() {
 	const resume = {
 		experience: [
 			{
-				role: 'WordPress Engineer',
+				role: 'Senior Software Engineer',
 				employer: 'NBA',
 				link: 'https://www.nba.com/',
 				duration: {
@@ -138,31 +138,37 @@ module.exports = function() {
 		skills: [
 			{
 				type: 'HTML',
-				tools: ['Eleventy', 'Jekyll', 'Liquid'],
+				tools: ['Eleventy', 'Liquid', 'Web Components'],
 			},
 			{
 				type: 'CSS',
-				tools: ['PostCSS', 'Sass', 'ITCSS', 'BEM'],
+				tools: ['Sass', 'PostCSS', 'BEM', 'ITCSS'],
 			},
 			{
 				type: 'JavaScript',
 				tools: [
 					'TypeScript',
 					'Node.js',
+					'ES Modules',
+					'Jest',
+					'ESLint',
+					'Prettier',
 					'Express',
 					'Next.js',
 					'React',
 					'Angular',
-					'Electron',
-					'Jest',
-					'Ava',
-					'ESLint',
-					'Prettier',
 				],
 			},
 			{
 				type: 'PHP',
-				tools: ['WordPress', 'Composer', 'Pest', 'PHPCS'],
+				tools: [
+					'WordPress',
+					'Composer',
+					'Pest',
+					'Brain Monkey',
+					'PHPCS',
+					'Rector',
+				],
 			},
 			{
 				type: 'SQL, NoSQL',
@@ -390,16 +396,6 @@ module.exports = function() {
 					'Page Layout',
 					'Portfolio Seminar',
 				],
-			},
-		],
-		links: [
-			{
-				label: 'GitHub',
-				link: 'github.com/paulshryock',
-			},
-			{
-				label: 'LinkedIn',
-				link: 'linkedin.com/in/paulshryock',
 			},
 		],
 	}
