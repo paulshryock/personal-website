@@ -1,4 +1,8 @@
 :root {
   color-scheme: light dark;
   scroll-behavior: smooth;
+
+  &:has(meta[name="color-scheme"][content="dark light"]) {
+    color-scheme: dark light;
+  }
 }
