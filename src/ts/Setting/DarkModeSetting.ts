@@ -19,7 +19,7 @@ class Logger {
  * on dark backgrounds.
  *
  * @sealed
- * @since unreleased
+ * @since 0.2.3
  * @todo  Nest name and value inside query
  * @todo  Add name "darkMode"
  * @todo  Remove logging
@@ -33,7 +33,7 @@ export class DarkModeSetting extends Setting {
 	 * Name of setting.
 	 *
 	 * @type  {string}
-	 * @since unreleased
+	 * @since 0.2.3
 	 */
 	public readonly name: string = 'prefers-color-scheme'
 
@@ -41,7 +41,7 @@ export class DarkModeSetting extends Setting {
 	 * Value of setting.
 	 *
 	 * @type  {string}
-	 * @since unreleased
+	 * @since 0.2.3
 	 */
 	public readonly value: string = 'dark'
 
@@ -55,7 +55,7 @@ export class DarkModeSetting extends Setting {
 	 * Checks if dark mode is currently active.
 	 *
 	 * @return {boolean} Whether or not dark mode is currently active.
-	 * @since  unreleased
+	 * @since  0.2.3
 	 */
 	public isActive(): boolean {
 		return (
@@ -71,7 +71,7 @@ export class DarkModeSetting extends Setting {
 	 * Side effect: Modifies the DOM.
 	 *
 	 * @return {void}
-	 * @since  unreleased
+	 * @since  0.2.3
 	 */
 	public activate(): void {
 		const meta = document.querySelector(META_SELECTOR) as HTMLMetaElement
@@ -89,7 +89,7 @@ export class DarkModeSetting extends Setting {
 	 * Side effect: Modifies the DOM.
 	 *
 	 * @return {void}
-	 * @since  unreleased
+	 * @since  0.2.3
 	 */
 	public deactivate(): void {
 		const meta = document.querySelector(META_SELECTOR) as HTMLMetaElement
@@ -108,7 +108,7 @@ export class DarkModeSetting extends Setting {
 	 *
 	 * @param  {string} content Value for the element's content attribute.
 	 * @return {void}
-	 * @since  unreleased
+	 * @since  0.2.3
 	 */
 	#appendMetaToHead(content: string): void {
 		const meta = document.createElement('meta')
