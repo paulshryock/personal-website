@@ -2,10 +2,7 @@
 layout: scaffold
 ---
 {% render 'masthead', site: site, navigation: navigation %}
-<main
-	aria-labelledby="content-title"
-	class="content"
->
+<main aria-labelledby="content-title" class="content">
   {% if page_title or title %}
   <header class="content__header">
     {%- if page.url == '/' %}

@@ -2,17 +2,17 @@
 layout: scaffold
 ---
 {% render 'masthead', site: site, navigation: navigation %}
-<main
-  aria-labelledby="content-title"
-  class="content"
-  data-component="stack"
->
-  {% if title %}
+<main aria-labelledby="content-title" class="content stack">
+  {% if page_title or title %}
   <header class="content__header">
-    <h1 class="content__title" id="content-title">{{ page_title | default: title | strip | strip_html }}</h1>
+    <h1 class="content__title" id="content-title">
+    	{{ page_title | default: title | strip | strip_html }}
+    </h1>
 
     {% if tags contains "articles" %}
-    <small class="beard">Last Modified {{ page.date | date: "%Y-%m-%d" }}</small>
+    <small class="beard">
+    	Last Modified {{ page.date | date: "%Y-%m-%d" }}
+    </small>
     {% endif %}
 
     <p class="content__summary">{{ summary | default: description }}</p>
