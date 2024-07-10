@@ -10,7 +10,7 @@ Actively maintained when I have time.
 
 ### Maintainer
 
--   [Paul Shryock](https://github.com/paulshryock)
+- [Paul Shryock](https://github.com/paulshryock)
 
 <!-- todo ## Requirements -->
 

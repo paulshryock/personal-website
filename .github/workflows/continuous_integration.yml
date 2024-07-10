@@ -3,10 +3,9 @@ name: Continuous integration
 on:
   workflow_dispatch:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-
   continuous_integration:
     name: 'Continuous integration'
     runs-on: ubuntu-latest

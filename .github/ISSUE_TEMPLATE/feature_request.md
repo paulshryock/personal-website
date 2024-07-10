@@ -5,12 +5,12 @@ about: Let me know if something crucial is missing from my website.
 
 ## User story
 
-- AS A _____,
-- I WANT TO _____,
-- SO THAT _____.
+- AS A **\_**,
+- I WANT TO **\_**,
+- SO THAT **\_**.
 
 ## Acceptance criteria
 
-- GIVEN _____,
-- WHEN _____,
-- THEN _____.
+- GIVEN **\_**,
+- WHEN **\_**,
+- THEN **\_**.

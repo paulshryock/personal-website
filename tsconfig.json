@@ -24,5 +24,11 @@
 		"strictNullChecks": true,
 		"target": "esnext"
 	},
-	"include": ["./*.ts", "./bin/**/*", "./config/**/*", "./src/**/*", "./tests/**/*"]
+	"include": [
+		"./*.ts",
+		"./bin/**/*",
+		"./config/**/*",
+		"./src/**/*",
+		"./tests/**/*"
+	]
 }
