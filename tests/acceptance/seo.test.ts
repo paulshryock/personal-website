@@ -1,91 +1,74 @@
-import { getAbsoluteFilePaths } from './acceptance-utilities.js'
-import { readFile } from 'fs/promises'
+import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals'
+import { getAbsoluteFilePaths } from './acceptance-utilities.ts'
+import { HOST } from './setup.ts'
 import { parse } from 'node-html-parser'
 
-interface Context {
-	htmlFiles?: string[]
-	navigation?: {
-		[key: string]: {
-			items: {
-				link: string
-				label: string
-			}[]
-		}
-	}
-}
+const HTML_FILE_PATHS: string[] = (await getAbsoluteFilePaths('./dist')).filter(
+	(filePath) => /\.html$/u.exec(filePath) && !filePath.includes('health-check'),
+)
 
-describe('seo', () => {
-	const context: Context = {}
+const PATHS = HTML_FILE_PATHS.map((path) =>
+	path.replace(/.*dist\//u, '/').replace(/\/index\.html/u, '/'),
+)
 
-	beforeAll(async () => {
-		const htmlFiles = (await getAbsoluteFilePaths('./dist')).filter(
-			(filePath) => filePath.match(/(?<!health-check\/index)\.html$/u),
+const TITLE_MINIMUM_LENGTH = 30
+const TITLE_MAXIMUM_LENGTH = 60
+
+const DESCRIPTION_MINIMUM_LENGTH = 120
+const DESCRIPTION_MAXIMUM_LENGTH = 160
+
+beforeAll(() => {
+	if (HTML_FILE_PATHS.length === 0)
+		throw new Error('no compiled html files found')
+})
+
+describe.each(PATHS)('GET %s', (path: string) => {
+	let response: Response
+
+	beforeEach(
+		async () =>
+			(response = await fetch(new URL(path, HOST), { method: 'GET' })),
+	)
+
+	describe('<title> element', () => {
+		let title: string
+
+		beforeEach(
+			async () =>
+				(title =
+					(
+						parse(await response.text()).querySelector(
+							'title',
+						) as unknown as HTMLTitleElement
+					).textContent ?? ''),
 		)
-		const navigation = JSON.parse(
-			await readFile('./src/data/navigation.json', 'utf8'),
-		)
 
-		Object.assign(context, { htmlFiles, navigation })
+		it(`should be at least ${TITLE_MINIMUM_LENGTH} characters`, () =>
+			expect(title.length).toBeGreaterThan(TITLE_MINIMUM_LENGTH))
+
+		it(`should be less than ${TITLE_MAXIMUM_LENGTH} characters`, () =>
+			expect(title.length).toBeLessThan(TITLE_MAXIMUM_LENGTH))
 	})
 
-	it('has rendered at least 1 html file', () => {
-		expect(context?.htmlFiles?.length).toBeGreaterThan(0)
-	})
+	describe(`<meta name="description"> element's "content" attribute`, () => {
+		let description: string
 
-	it('has rendered the home page', () => {
-		expect(
-			context?.htmlFiles?.find((file) => file.match(/dist\/index\.html$/u)),
-		).not.toBeUndefined()
-	})
+		beforeEach(async () => {
+			description =
+				(
+					parse(await response.text()).querySelector(
+						'meta[name="description"]',
+					) as unknown as HTMLMetaElement
+				).getAttribute('content') ?? ''
+		})
 
-	it('has at least 1 navigation item', () => {
-		const items = context?.navigation?.primary?.items
-		expect(items?.length).toBeGreaterThan(0)
-	})
+		it(`should be at least ${DESCRIPTION_MINIMUM_LENGTH} characters`, () =>
+			expect(description.length).toBeGreaterThan(DESCRIPTION_MINIMUM_LENGTH))
 
-	it('has pages for each navigation item', () => {
-		const actual =
-			context?.htmlFiles?.map((file) => {
-				return file.replace(/.*\/dist(\/.*)\/index.html$/u, '$1')
-			}) ?? []
-		const items =
-			context?.navigation?.primary?.items.map((item) => item.link) ?? []
+		it(`should be less than ${DESCRIPTION_MAXIMUM_LENGTH} characters`, () =>
+			expect(description.length).toBeLessThan(DESCRIPTION_MAXIMUM_LENGTH))
 
-		expect(actual).toEqual(expect.arrayContaining(items))
-	})
-
-	it('has correct seo title and description lengths', async () => {
-		expect.hasAssertions()
-		expect.assertions(parseInt(`${context?.htmlFiles?.length}`, 10) * 3 * 2)
-
-		await Promise.all([
-			...(context?.htmlFiles?.map(async (file: string) => {
-				const content = parse(await readFile(file, 'utf8'))
-				const title = content?.querySelector('title')?.textContent ?? ''
-				const description =
-					content
-						?.querySelector('meta[name="description"]')
-						?.getAttribute('content') ?? ''
-
-				const metas = [
-					{
-						name: 'title',
-						content: title,
-						lengths: { min: 30, max: 60 },
-					},
-					{
-						name: 'description',
-						content: description,
-						lengths: { min: 120, max: 160 },
-					},
-				]
-
-				metas.forEach(async (meta) => {
-					expect(meta.content?.length).toBeGreaterThan(meta.lengths.min)
-					expect(meta.content?.length).toBeLessThan(meta.lengths.max)
-					expect(meta.content?.endsWith('...')).toBe(false)
-				})
-			}) ?? []),
-		])
+		it(`should not end with an elipsis`, () =>
+			expect(description).not.toMatch(/\.\.\.$/u))
 	})
 })

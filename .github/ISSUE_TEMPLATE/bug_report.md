@@ -1,33 +1,34 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Report a bug
+about: Let me know if something is broken or does not work as expected
 ---
-**Describe the bug**
-A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Page(s) affected
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+<!-- Fill in the blank. -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+- https://www.paulshryock.dev/_____
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Error code
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+- [ ] 404 Not Found
+- [ ] 500 Internal Server Error
+- [ ] Other
 
-**Additional context**
-Add any other context about the problem here.
+## Expected behavior
+
+<!-- Describe what should have happened. -->
+
+## Actual behavior
+
+<!-- Describe what actually happened. -->
+
+## Steps to reproduce
+
+<!-- Describe how I can experience the issue you are reporting. -->
+
+## Tell me what you're using
+
+- **Device**:
+- **Operating system**:
+- **Browser**:

@@ -1,0 +1,57 @@
+a {
+	text-decoration: underline solid currentcolor 0.125rem;
+	text-underline-offset: 0.1875rem;
+	text-decoration-skip-ink: auto;
+
+	&:link {
+		color: var(--site-text-color);
+		text-decoration-color: var(--hyperlink-color);
+	}
+
+	&:visited {
+		color: var(--site-text-color);
+		text-decoration-color: var(--hyperlink-color);
+	}
+
+	&:hover {
+		color: var(--hyperlink-color);
+	}
+
+	&:active {
+		color: var(--hyperlink-active-color);
+		text-decoration-color: currentcolor;
+	}
+
+	&[aria-current='page']:not(:active) {
+		color: var(--hyperlink-visited-color);
+	}
+
+	/* Absolute hyperlinks. */
+	&[href]:not([href^='/'], [href^='?'], [href^='#']) {
+		display: inline-block;
+		margin-block: 0;
+		vertical-align: top;
+
+		&::after {
+			background: var(--site-text-color);
+			border-radius: 0.25rem;
+			color: var(--site-background-color);
+			content: '→';
+			display: inline-block;
+			font-style: normal;
+			font-weight: 400;
+			height: 1em;
+			line-height: 1.1;
+			margin-inline: 0.25rem;
+			padding-inline: 0.25rem;
+
+			@media print {
+				content: '(' attr(href) ')';
+			}
+		}
+
+		&:hover::after {
+			background: var(--hyperlink-color);
+		}
+	}
+}

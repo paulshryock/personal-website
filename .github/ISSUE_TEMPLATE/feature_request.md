@@ -1,15 +1,16 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Request a feature
+about: Let me know if something crucial is missing from my website.
 ---
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## User story
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+- AS A _____,
+- I WANT TO _____,
+- SO THAT _____.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Acceptance criteria
+
+- GIVEN _____,
+- WHEN _____,
+- THEN _____.

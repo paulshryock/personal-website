@@ -1,0 +1,7 @@
+li {
+	/* Hack: Retain list semantics by adding a zero-width space before. */
+	nav &::before {
+		content: '\200B'; /* Zero-width space. */
+		position: absolute; /* No extra space. */
+	}
+}

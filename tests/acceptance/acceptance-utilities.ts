@@ -1,5 +1,5 @@
-import { resolve } from 'path'
 import { readdir } from 'fs/promises'
+import { resolve } from 'path'
 
 /**
  * Recursively gets all absolute file paths in a directory.
@@ -19,5 +19,5 @@ export async function getAbsoluteFilePaths(
 		}),
 	)
 
-	return Array.prototype.concat(...filePaths)
+	return filePaths.flat()
 }

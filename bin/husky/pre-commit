@@ -1,5 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Enforce code quality.
+echo '⚙️ Checking code quality.'
 npm run quality

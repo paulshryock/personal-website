@@ -1,0 +1,26 @@
+.masthead {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	justify-content: flex-start;
+	padding: 0.5rem;
+
+	@media screen and (width >= 37.5em) {
+		padding: 1.5rem;
+	}
+
+	@media screen and (width >= 43em) {
+		gap: 1.5rem;
+	}
+
+	@media print {
+		border-width: 0.125em;
+		padding: 0 0 0.5rem;
+
+		&::after {
+			content: var(--site-url-short);
+			margin-inline-start: auto;
+		}
+	}
+}

@@ -1,21 +1,15 @@
 ## Summary
 
-<!-- Describe the problem your change solves -->
+<!-- Summarize the changes in this pull request. -->
 
 ## Testing
 
-<!-- Add instructions for how to QA and validate your change -->
+<!-- Add instructions for testing the changes. -->
 
-## Ticket
+## Issue
 
-<!-- Leave the ticket number if one exists, otherwise create a ticket for this change -->
+<!-- Add a link to a corresponding GitHub issue for these changes. -->
 
 ## Screenshot
 
-<!-- Add a screenshot if relevant -->
-
----
-
-- [ ] My change is documented
-- [ ] My change is tested
-- [ ] My change is in the Changelog
+<!-- Leave a screenshot, if appropriate. -->

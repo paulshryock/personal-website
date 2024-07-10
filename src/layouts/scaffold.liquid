@@ -1,0 +1,12 @@
+{% render 'components/head',
+	description: description or summary,
+	page: page,
+	page_title: page_title,
+	seo_title: seo_title,
+	site: site,
+	title: title,
+%}
+<body class="site page {{ layout }}__layout">
+	{{ content }}
+</body>
+</html>

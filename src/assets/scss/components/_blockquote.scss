@@ -1,0 +1,35 @@
+.blockquote {
+	:where(&) {
+		border-block-start: 0.125rem solid;
+		border-inline-start: 0.25rem solid;
+		max-inline-size: 75ch;
+		padding-block-start: 1rem;
+		padding-inline-start: 1rem;
+	}
+
+	:where(& cite) {
+		display: block;
+
+		&::before {
+			content: '—';
+			margin-inline-end: 0.25rem;
+		}
+	}
+
+	:where(& p:first-of-type) {
+		&::before {
+			color: var(--hyperlink-visited-color);
+			content: open-quote;
+			float: left;
+			font-size: 4em;
+			line-height: 1;
+			margin-inline-end: 1rem;
+		}
+	}
+
+	:where(& p:last-of-type) {
+		&::after {
+			content: close-quote;
+		}
+	}
+}

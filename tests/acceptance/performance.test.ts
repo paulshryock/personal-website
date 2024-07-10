@@ -1,56 +1,41 @@
-import { getAbsoluteFilePaths } from './acceptance-utilities.js'
-import { readFile } from 'node:fs/promises'
-import { promisify } from 'node:util'
+import { beforeAll, describe, expect, test } from '@jest/globals'
+import { getAbsoluteFilePaths } from './acceptance-utilities.ts'
 import { gzip } from 'node:zlib'
+import { promisify } from 'node:util'
+import { readFile } from 'node:fs/promises'
 
-describe('network requests', () => {
-	test('gzipped html files fit in a single TCP packet', async () => {
-		const gzipAsync = promisify(gzip)
-		const packetSize = 14000
-		const packetWarnSize = packetSize - 2000
+const HTML_FILE_PATHS: string[] = (await getAbsoluteFilePaths('./dist')).filter(
+	(filePath) => /\.html$/u.exec(filePath),
+)
 
-		const files = await Promise.all(
-			(
-				await getAbsoluteFilePaths('./dist')
-			)
-				.filter((filePath) => filePath.match(/\.html$/))
-				.map(async (filePath) => {
-					const content = await readFile(filePath, 'utf8')
-					const gzipped = await gzipAsync(content, { level: 9 })
-					return {
-						filePath,
-						gzippedLength: gzipped.length,
-					}
-				}),
-		)
+beforeAll(() => {
+	if (HTML_FILE_PATHS.length === 0)
+		throw new Error('no compiled html files found')
+})
 
-		const filesToWarn = files.filter(
-			(file) => file.gzippedLength > packetWarnSize,
-		)
-		if (filesToWarn.length > 0) {
-			console.warn(
-				'gzipped html files are getting close to single TCP packet size limit: ' +
-					'%s',
-				filesToWarn.map(
-					(file) => `${file.filePath}
-	`,
-				),
-			)
-		}
+describe.each(HTML_FILE_PATHS)('compiled html files', (filePath) => {
+	const filePathShort = filePath.replace(/.*\/dist/u, './dist')
 
-		const filesTooLarge = files.filter(
-			(file) => file.gzippedLength > packetSize,
-		)
-		if (filesTooLarge.length > 0) {
-			console.error(
-				'gzipped html files are over single TCP packet size limit: ' + '%s',
-				filesTooLarge.map(
-					(file) => `${file.filePath}
-	`,
-				),
-			)
-		}
+	describe('should not exceed tcp packet size when gzipped', () => {
+		const TCP_PACKET_SIZE = 14000
+		const TCP_PACKET_WARN_SIZE = TCP_PACKET_SIZE - 2000
+		/** @see https://zlib.net/manual.html#Constants */
+		const Z_BEST_COMPRESSION = 9
 
-		expect(filesTooLarge.length).not.toBeGreaterThan(0)
+		test(filePathShort, async () => {
+			const fileContent = await readFile(filePath, 'utf8')
+			const gzipped = await promisify(gzip)(fileContent, {
+				level: Z_BEST_COMPRESSION,
+			})
+
+			if (gzipped.length >= TCP_PACKET_WARN_SIZE) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					`${filePathShort} (${gzipped.length}) is too close to tcp packet size (${TCP_PACKET_SIZE}). reduce file size.`,
+				)
+			}
+
+			expect(gzipped.length).toBeLessThan(TCP_PACKET_SIZE)
+		})
 	})
 })

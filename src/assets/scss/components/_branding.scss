@@ -1,0 +1,54 @@
+.branding {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.125em;
+	justify-content: flex-start;
+	padding: 0.5rem;
+
+	@media screen and (width >= 32em) {
+		gap: 0.5em;
+	}
+
+	@media print {
+		border-width: 0.125em;
+		gap: 0.5em;
+		padding: 0 0.5rem 0 0;
+	}
+
+	&__title {
+		font-size: 1.5em;
+		font-weight: 700;
+		line-height: 1.1;
+	}
+
+	&__link {
+		border-radius: 0.25rem;
+
+		&:link,
+		&:visited {
+			color: var(--hyperlink-visited-color);
+
+			@media print {
+				text-decoration: none;
+			}
+		}
+
+		&:active {
+			color: var(--hyperlink-active-color);
+		}
+	}
+
+	&__pronouns + &__tagline {
+		&::before {
+			@media screen and (width >= 32em), print {
+				content: '|';
+				margin-inline-end: 0.5em;
+			}
+
+			@media print {
+				content: '—';
+			}
+		}
+	}
+}

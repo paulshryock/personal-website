@@ -1,0 +1,7 @@
+textarea {
+	font: inherit;
+
+	&:not([rows]) {
+		min-block-size: 10rem;
+	}
+}

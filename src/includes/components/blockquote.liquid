@@ -1,0 +1,6 @@
+{% if quote %}
+<figure class="blockquote">
+	<blockquote>{{ quote }}</blockquote>
+	{% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}
+</figure>
+{% endif %}

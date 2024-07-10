@@ -1,0 +1,11 @@
+.colophon {
+	padding: 1rem;
+
+	@media screen and (width >= 37.5em) {
+		padding: 2rem;
+	}
+
+	@media print {
+		padding: 1rem 0;
+	}
+}

@@ -1,7 +1,12 @@
-import { getAbsoluteFilePaths } from './acceptance-utilities.js'
+import { describe, expect, it } from '@jest/globals'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { getAbsoluteFilePaths } from './acceptance-utilities.ts'
 
-it('should recursively get all absolute file paths in a directory', async () => {
-	await expect(getAbsoluteFilePaths(__dirname)).resolves.toContain(__filename)
-})
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-export {}
+describe('getAbsoluteFilePaths', () =>
+	describe('when run on the directory containing this test suite', () =>
+		it('should include the path to this test suite', async () =>
+			expect(await getAbsoluteFilePaths(__dirname)).toContain(__filename))))

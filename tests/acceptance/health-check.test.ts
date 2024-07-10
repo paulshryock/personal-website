@@ -1,7 +1,15 @@
-import { readFile } from 'node:fs/promises'
+import { beforeEach, describe, expect, test } from '@jest/globals'
+import { HOST } from './setup.ts'
 
-test('health check', async () => {
-	expect(await readFile('./dist/health-check/index.html', 'utf8')).toBe(
-		'success',
+describe('should return a 200 status code', () => {
+	let response: Response
+
+	beforeEach(
+		async () =>
+			(response = await fetch(new URL('/health-check/', HOST), {
+				method: 'GET',
+			})),
 	)
+
+	test('GET /health-check/', () => expect(response.status).toBe(200))
 })

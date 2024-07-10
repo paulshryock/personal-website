@@ -1,0 +1,20 @@
+.panel {
+	background: var(--color-indigo-10);
+	border-radius: 0.25rem;
+	color: var(--color-indigo-90);
+	padding: 1rem;
+
+	&__title {
+		display: inline-block;
+	}
+
+	:where(a) {
+		&:link {
+			color: var(--color-indigo-70);
+		}
+
+		&:visited {
+			color: var(--color-indigo-70);
+		}
+	}
+}

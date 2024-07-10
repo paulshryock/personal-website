@@ -1,0 +1,57 @@
+name: Continuous delivery
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  continuous_delivery:
+    name: 'Continuous delivery'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check source code formatting
+        run: npm run format:check
+
+      - name: Lint source code
+        run: npm run lint:check
+
+      - name: Run static analysis
+        run: npm run typecheck
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Compile source code
+        run: npm run compile
+
+      - name: Run acceptance tests
+        run: npm run test:acceptance
+
+      - name: Deploy preview
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npm run deploy -- --message=${GITHUB_REF##*/}
+        if: ${{ contains( github.ref, 'alpha' ) || contains( github.ref, 'beta' ) || contains( github.ref, 'rc' ) }}
+
+      - name: Deploy to production
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: npm run deploy -- --message=${GITHUB_REF##*/} --prod
+        if: ${{ contains( github.ref, 'alpha' ) == false && contains( github.ref, 'beta' ) == false && contains( github.ref, 'rc' ) == false }}

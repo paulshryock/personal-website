@@ -1,9 +1,11 @@
-import type { Config } from '@jest/types'
+import type { Config } from 'jest'
 
-const config: Config.InitialOptions = {
-	bail: true,
-	collectCoverage: false,
-	collectCoverageFrom: ['src/ts', 'src/js'],
+const config: Config = {
+	clearMocks: true,
+	collectCoverage: true,
+	collectCoverageFrom: ['bin/**/*', 'src/**/*'],
+	coverageDirectory: 'coverage',
+	coverageProvider: 'babel',
 	coverageThreshold: {
 		global: {
 			branches: 100,
@@ -12,18 +14,10 @@ const config: Config.InitialOptions = {
 			statements: 100,
 		},
 	},
-	extensionsToTreatAsEsm: ['.ts', '.test.ts'],
-	globals: {
-		'ts-jest': {
-			tsconfig: 'tsconfig.json',
-			useESM: true,
-		},
-	},
-	preset: 'ts-jest/presets/default-esm',
-	resolver: 'jest-ts-webcompat-resolver',
-	testEnvironment: 'node',
-	transform: {},
-	verbose: true,
+	errorOnDeprecated: true,
+	extensionsToTreatAsEsm: ['.ts'],
+	testMatch: ['<rootDir>/tests/**/*.test.ts'],
+	testPathIgnorePatterns: ['/tests/acceptance/'],
 }
 
 export default config

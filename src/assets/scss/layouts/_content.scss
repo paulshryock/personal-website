@@ -1,0 +1,51 @@
+.content {
+	padding: 2rem 1rem;
+
+	@media screen and (width >= 37.5em) {
+		padding: 2rem;
+	}
+
+	@media print {
+		padding: 1rem 0;
+	}
+
+	&__header {
+		:where(&) .beard {
+			font-family: var(--font-stack-monospace);
+		}
+	}
+
+	&__title {
+		font-size: 2em;
+		max-width: 40ch;
+
+		:where(& ~ p) {
+			font-size: 1.25em;
+		}
+	}
+
+	:where(& *:not(li) + *:not(li)) {
+		margin-block-start: 1.5em;
+
+		&:where(h1, h2, h3, h4, h5, h6) {
+			margin-block-start: 2.5em;
+		}
+	}
+
+	:where(&) :is(h1) {
+		font-size: 2em;
+		max-width: 40ch;
+	}
+
+	:where(&) :is(h2) {
+		font-size: 1.5em;
+	}
+
+	:where(&) :is(h3) {
+		font-size: 1.25em;
+	}
+
+	:where(&) :is(h4, h5, h6) {
+		font-size: 1.125em;
+	}
+}

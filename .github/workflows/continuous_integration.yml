@@ -1,0 +1,43 @@
+name: Continuous integration
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  continuous_integration:
+    name: 'Continuous integration'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check source code formatting
+        run: npm run format:check
+
+      - name: Lint source code
+        run: npm run lint:check
+
+      - name: Run static analysis
+        run: npm run typecheck
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Compile source code
+        run: npm run compile
+
+      - name: Run acceptance tests
+        run: npm run test:acceptance

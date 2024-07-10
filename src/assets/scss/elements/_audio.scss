@@ -1,0 +1,10 @@
+audio {
+	block-size: auto;
+	display: block;
+	inline-size: 100%;
+	vertical-align: middle;
+
+	&:not([controls]) {
+		display: none;
+	}
+}

@@ -1,0 +1,13 @@
+ul {
+	list-style-position: inside;
+	max-inline-size: 65ch;
+
+	nav & {
+		list-style: none;
+	}
+
+	&:not(nav &) {
+		list-style-position: outside;
+		padding-inline-start: 1rem;
+	}
+}

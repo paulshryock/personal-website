@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+<head>
+	{% comment %}<meta charset|http-equiv|viewport>{% endcomment %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% comment %}<title>{% endcomment %}
+	<title>{{ seo_title | default: page_title | default: title | default: site.title | strip }}</title>
+	{% comment %}preconnect{% endcomment %}
+	{% comment %}<script async>{% endcomment %}
+	{% comment %}CSS that includes @import{% endcomment %}
+	{% comment %}Synchronous JS{% endcomment %}
+	{% comment %}Synchronous CSS{% endcomment %}
+	<link href="/css/main.css" rel="stylesheet">
+	{% comment %}preload{% endcomment %}
+	{% comment %}<script defer>{% endcomment %}
+	<script defer src="/js/main.js" type="module"></script>
+	<script defer nomodule src="/js/main-legacy.js"></script>
+	{% comment %}prefetch / prerender{% endcomment %}
+	{% comment %}
+	Everything else (seo meta tags, icons, open graph, etc.)
+	{% endcomment %}
+	<meta content="{{ description | default: summary | default: site.description | strip | strip_html }}" name="description">
+	{% render 'components/favicon' %}
+</head>
