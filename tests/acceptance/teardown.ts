@@ -1,5 +1,6 @@
-import { server } from './setup.ts'
+import { HOST, server } from './setup.ts'
 
 export default function teardown(): void {
-	server.close()
+	/* eslint-disable-next-line no-console -- This is fine. */
+	server.close(() => console.debug(`shutting down server at ${HOST}`))
 }
