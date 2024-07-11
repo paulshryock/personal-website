@@ -53,6 +53,13 @@
 	--hyperlink-visited-color: VisitedText;
 	--hyperlink-active-color: ActiveText;
 
+	box-sizing: border-box;
+	color-scheme: light dark;
+	font-size-adjust: none;
+	min-block-size: 100%;
+	scroll-behavior: smooth;
+	text-size-adjust: none;
+
 	@media (prefers-color-scheme: dark) {
 		/* Site. */
 		--site-background-color: var(--color-indigo-100);
@@ -63,13 +70,6 @@
 		--hyperlink-visited-color: var(--color-magenta-20);
 		--hyperlink-active-color: ActiveText;
 	}
-
-	box-sizing: border-box;
-	color-scheme: light dark;
-	font-size-adjust: none;
-	min-block-size: 100%;
-	scroll-behavior: smooth;
-	text-size-adjust: none;
 
 	&:lang(en) {
 		quotes: '\201c' '\201d' '\2018' '\2019'; /* “ ” ‘ ’ */
