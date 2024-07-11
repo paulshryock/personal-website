@@ -19,7 +19,10 @@ layout: scaffold
 
 	    {% if tags contains "articles" %}
 	    <small class="beard">
-	    	Last Modified {{ page.date | date: "%Y-%m-%d" }}
+	    	Last Modified
+	    	<time datetime="{{ page.date | date: "%Y-%m-%dT%H:%M:%S%z" }}">
+	    		{{ page.date | date: "%Y-%m-%d" }}
+	    	</time>
 	    </small>
 	    {% endif %}
 
