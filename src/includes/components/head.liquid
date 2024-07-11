@@ -21,5 +21,6 @@
 	Everything else (seo meta tags, icons, open graph, etc.)
 	{% endcomment %}
 	<meta content="{{ description | default: summary | default: site.description | strip | strip_html }}" name="description">
+	<link rel="canonical" href="{{ site.origin }}{{ page.url }}">
 	{% render 'components/favicon' %}
 </head>
