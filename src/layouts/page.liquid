@@ -3,31 +3,33 @@ layout: scaffold
 ---
 {% render 'components/masthead', navigation: navigation, page: page, site: site %}
 <main class="content">
-	{% if page_title or title or summary or description %}
-	<header class="content__header">
-		{% if page_title or title %}
-		{% if '/' == page.url %}
-		{% assign title_element = 'h2' %}
-		{% else %}
-		{% assign title_element = 'h1' %}
+	<article>
+		{% if page_title or title or summary or description %}
+		<header class="content__header">
+			{% if page_title or title %}
+			{% if '/' == page.url %}
+			{% assign title_element = 'h2' %}
+			{% else %}
+			{% assign title_element = 'h1' %}
+			{% endif %}
+			<{{ title_element }} class="content__title">
+				{{ page_title | default: title }}
+			</{{ title_element }}>
+			{% endif %}
+
+	    {% if tags contains "articles" %}
+	    <small class="beard">
+	    	Last Modified {{ page.date | date: "%Y-%m-%d" }}
+	    </small>
+	    {% endif %}
+
+	    {% if summary or description %}
+	  		<p>{{ summary | default: description }}</p>
+	    {% endif %}
+		</header>
 		{% endif %}
-		<{{ title_element }} class="content__title">
-			{{ page_title | default: title }}
-		</{{ title_element }}>
-		{% endif %}
 
-    {% if tags contains "articles" %}
-    <small class="beard">
-    	Last Modified {{ page.date | date: "%Y-%m-%d" }}
-    </small>
-    {% endif %}
-
-    {% if summary or description %}
-  		<p>{{ summary | default: description }}</p>
-    {% endif %}
-	</header>
-	{% endif %}
-
-	{{ content }}
+		{{ content }}
+	</article>
 </main>
 {% render 'components/colophon', site: site %}
