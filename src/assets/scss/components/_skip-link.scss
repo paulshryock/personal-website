@@ -1,0 +1,9 @@
+.skip-link:focus {
+	background: var(--hyperlink-visited-color);
+	color: var(--site-background-color);
+	inset-block-start: 1rem;
+	inset-inline-start: 1rem;
+	padding: 1rem;
+	position: absolute;
+	text-decoration-color: var(--site-background-color);
+}

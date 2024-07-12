@@ -1,0 +1,14 @@
+/// Visually hides an element.
+///
+/// Does not visually hide interactive elements with focus or active state.
+///
+/// @see https://www.a11yproject.com/posts/how-to-hide-content/
+.visually-hidden:not(:focus, :active) {
+	clip-path: inset(50%);
+	clip: rect(0 0 0 0);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}

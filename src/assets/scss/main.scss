@@ -59,3 +59,7 @@
 @use 'components/panel';
 @use 'components/resume';
 @use 'components/site';
+@use 'components/skip-link';
+
+/* Utility selectors. */
+@use 'utilities/visually-hidden';
