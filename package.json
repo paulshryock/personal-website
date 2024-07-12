@@ -16,7 +16,8 @@
 		"compile:css": "sass --style=compressed ./src/assets/scss/:./dist/css/",
 		"postcompile:css": "sleep 1 && postcss ./dist/css/*.css --dir=./dist/css/ --map --use=autoprefixer",
 		"compile:html": "node --require=esbuild-register ./node_modules/.bin/eleventy",
-		"compile:img": "cp -r ./src/assets/favicon/* ./dist/",
+		"precompile:img": "mkdir -p ./dist/img/",
+		"compile:img": "cp -r ./src/assets/favicon/* ./dist/ && cp -r ./src/assets/img/* ./dist/img/",
 		"compile:js": "esbuild --bundle --minify --outdir=./dist/js/ --sourcemap --target=$(npx browserslist-to-esbuild | tr ' ' ',') ./src/assets/ts/main.ts",
 		"postcompile:js": "sleep 1 && swc ./dist/js/main.js --out-file ./dist/js/main-legacy.js --source-maps",
 		"deploy": "netlify deploy",
@@ -75,7 +76,7 @@
 		"stylelint-no-unsupported-browser-features": "8.0.1",
 		"ts-node": "10.9.2",
 		"typescript": "5.5.3",
-		"typescript-eslint": "8.0.0-alpha.30"
+		"typescript-eslint": "8.0.0-alpha.41"
 	},
 	"browserslist": [
 		"> 0.5%, fully supports es6-module, not dead"
