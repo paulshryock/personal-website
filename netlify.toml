@@ -1,16 +1,10 @@
-##
- # Build instructions.
- ##
-
+## Build instructions. ##
 [build]
 	base = "/"
 	publish = "dist"
 	command = "npm run compile"
 
-##
- # Headers.
- ##
-
+## Headers. ##
 [[headers]]
 	for = "/*"
 	[headers.values]
@@ -24,10 +18,7 @@
 		X-Frame-Options = "DENY"
 		X-XSS-Protection = "1; mode=block"
 
-##
- # Redirects: Default subdomain.
- ##
-
+## Redirects to default subdomain. ##
 [[redirects]]
 	from = "http://pshry.netlify.app"
 	to = "https://www.paulshryock.dev/"
@@ -52,10 +43,7 @@
 	status = 308
 	force = true
 
-##
- # Redirects: Social media.
- ##
-
+## Redirects to third-party URL's. ##
 [[redirects]]
 	from = "/behance"
 	to = "https://www.behance.net/pshry"
@@ -75,3 +63,13 @@
 	from = "/linkedin"
 	to = "https://www.linkedin.com/in/paulshryock"
 	status = 308
+
+## Internal redirects. ##
+[[redirects]]
+	from = "/api/*"
+	to = "/.netlify/functions/:splat"
+	status = 200
+
+## Server API routes. ##
+[functions]
+	directory = "src/routes/api"
