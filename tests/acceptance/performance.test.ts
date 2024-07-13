@@ -1,12 +1,10 @@
 import { beforeAll, describe, expect, test } from '@jest/globals'
-import { getAbsoluteFilePaths } from './acceptance-utilities.ts'
+import { getHtmlFilePaths } from './acceptance-utilities.ts'
 import { gzip } from 'node:zlib'
 import { promisify } from 'node:util'
 import { readFile } from 'node:fs/promises'
 
-const HTML_FILE_PATHS: string[] = (await getAbsoluteFilePaths('./dist')).filter(
-	(filePath) => /\.html$/u.exec(filePath),
-)
+const HTML_FILE_PATHS = await getHtmlFilePaths()
 
 beforeAll(() => {
 	if (HTML_FILE_PATHS.length === 0)

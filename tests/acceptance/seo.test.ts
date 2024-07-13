@@ -1,14 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, it } from '@jest/globals'
-import { getAbsoluteFilePaths } from './acceptance-utilities.ts'
-import { HOST } from './setup.ts'
-import { parse } from 'node-html-parser'
+import {
+	fetchPathAndGetRootElement,
+	getHtmlFilePaths,
+	getUrlPaths,
+} from './acceptance-utilities.ts'
 
-const HTML_FILE_PATHS: string[] = (await getAbsoluteFilePaths('./dist')).filter(
-	(filePath) => /\.html$/u.exec(filePath) && !filePath.includes('health-check'),
-)
-
-const PATHS = HTML_FILE_PATHS.map((path) =>
-	path.replace(/.*dist\//u, '/').replace(/\/index\.html/u, '/'),
+const URL_PATHS = getUrlPaths(await getHtmlFilePaths()).filter(
+	(path) => !path.includes('health-check'),
 )
 
 const TITLE_MINIMUM_LENGTH = 30
@@ -18,30 +16,22 @@ const DESCRIPTION_MINIMUM_LENGTH = 120
 const DESCRIPTION_MAXIMUM_LENGTH = 160
 
 beforeAll(() => {
-	if (HTML_FILE_PATHS.length === 0)
-		throw new Error('no compiled html files found')
+	if (URL_PATHS.length === 0) throw new Error('no compiled html files found')
 })
 
-describe.each(PATHS)('GET %s', (path: string) => {
-	let response: Response
+describe.each(URL_PATHS)('GET %s', (path: string) => {
+	let rootElement: HTMLElement
 
-	beforeEach(
-		async () =>
-			(response = await fetch(new URL(path, HOST), { method: 'GET' })),
-	)
+	beforeEach(async () => (rootElement = await fetchPathAndGetRootElement(path)))
 
 	describe('<title> element', () => {
 		let title: string
 
-		beforeEach(
-			async () =>
-				(title =
-					(
-						parse(await response.text()).querySelector(
-							'title',
-						) as unknown as HTMLTitleElement
-					).textContent ?? ''),
-		)
+		beforeEach(() => {
+			title =
+				(rootElement.querySelector('title') as unknown as HTMLTitleElement)
+					.textContent ?? ''
+		})
 
 		it(`should be at least ${TITLE_MINIMUM_LENGTH} characters`, () =>
 			expect(title.length).toBeGreaterThan(TITLE_MINIMUM_LENGTH))
@@ -53,10 +43,10 @@ describe.each(PATHS)('GET %s', (path: string) => {
 	describe(`<meta name="description"> element's "content" attribute`, () => {
 		let description: string
 
-		beforeEach(async () => {
+		beforeEach(() => {
 			description =
 				(
-					parse(await response.text()).querySelector(
+					rootElement.querySelector(
 						'meta[name="description"]',
 					) as unknown as HTMLMetaElement
 				).getAttribute('content') ?? ''
