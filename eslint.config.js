@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 export default tseslint.config(
-	{ ignores: ['.cache/**', 'coverage/**', 'dist/**'] },
+	{ ignores: ['.cache/**', '.netlify/**', 'coverage/**', 'dist/**'] },
 	{
 		files: ['**/*'],
 		languageOptions: {
@@ -36,22 +36,16 @@ export default tseslint.config(
 	...tseslint.configs.strictTypeChecked.map((config) => ({
 		...config,
 		files: ['**/*.ts'],
-		rules: {
-			...config.rules,
-			'@typescript-eslint/no-confusing-void-expression': [
-				'error',
-				{ ignoreArrowShorthand: true },
-			],
-			'@typescript-eslint/restrict-template-expressions': [
-				'error',
-				{ allowNumber: true },
-			],
-		},
 	})),
 	...tseslint.configs.stylisticTypeChecked.map((config) => ({
 		...config,
 		files: ['**/*.ts'],
 	})),
+	{
+		files: ['**/*.ts'],
+		name: 'personal-website/typescript-files',
+		rules: eslint.configs.typescript.rules,
+	},
 	{
 		files: ['src/data/**/*'],
 		name: 'personal-website/data-files',

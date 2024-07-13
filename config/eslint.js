@@ -172,6 +172,32 @@ const tests = {
 	},
 }
 
-export const configs = { comments, jsdoc, recommended, tests }
+/**
+ * Lint configuration for TypeScript files.
+ *
+ * @type {typeof eslint.configs.recommended}
+ * @since unreleased
+ */
+const typescript = {
+	rules: {
+		'@typescript-eslint/no-confusing-void-expression': [
+			'error',
+			{ ignoreArrowShorthand: true },
+		],
+		'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+		'@typescript-eslint/restrict-template-expressions': [
+			'error',
+			{ allowNumber: true },
+		],
+	},
+}
+
+export const configs = {
+	comments,
+	jsdoc,
+	recommended,
+	tests,
+	typescript,
+}
 
 export default { configs }
