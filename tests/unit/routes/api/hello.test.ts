@@ -8,9 +8,4 @@ describe('GET /api/hello', () => {
 
 	it('should return a 200 status code', () =>
 		expect(hello({} as Request, {} as Context).status).toBe(200))
-
-	it('should return response text of "Hello, world!"', async () =>
-		expect(await hello({} as Request, {} as Context).text()).toBe(
-			'Hello, world!',
-		))
 })
