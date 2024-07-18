@@ -50,8 +50,25 @@ export default async function createMessage(
 			},
 		)
 
-	const fields = await request.json()
-	const requiredFields = ['email', 'message', 'name']
+	const requiredFields = ['email', 'message', 'name'] as const
+	let fields: Record<(typeof requiredFields)[number], string>
+
+	try {
+		fields = await request.json()
+	} catch (error) {
+		console.error(error)
+		return new Response(
+			JSON.stringify({
+				error: 'Invalid body.',
+				status: 400,
+				statusText: 'Bad Request',
+			}),
+			{
+				headers: new Headers(defaultHeaders),
+				status: 400,
+			},
+		)
+	}
 
 	for (const field of requiredFields) {
 		if (!(field in fields))

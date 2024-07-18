@@ -1,4 +1,11 @@
-import { describe, expect, it } from '@jest/globals'
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	jest,
+} from '@jest/globals'
 import type { Context } from '@netlify/functions'
 import createMessage from '../../../../src/routes/api/contact.ts'
 import site from '../../../../src/data/site.js'
@@ -107,6 +114,40 @@ describe(PATH, () => {
 
 			describe('when Content-Type header is application/json', () => {
 				headers.set('Content-Type', 'application/json')
+
+				describe('when a valid json body is not provided', () => {
+					const request = new Request(ROUTE, { headers, method })
+					const consoleError = console.error
+
+					beforeEach(() => {
+						console.error = jest.fn()
+					})
+
+					afterEach(() => {
+						console.error = consoleError
+					})
+
+					it('should return a 400 response status', async () =>
+						expect((await createMessage(request, {} as Context)).status).toBe(
+							400,
+						))
+
+					it.each(defaultHeaderFields)(
+						'should include an %s header',
+						async (header) =>
+							expect(
+								(await createMessage(request, {} as Context)).headers.get(
+									header,
+								),
+							).not.toBeNull(),
+					)
+
+					it('should log an error to the console', async () => {
+						await createMessage(request, {} as Context)
+
+						expect(console.error).toHaveBeenCalled()
+					})
+				})
 
 				describe('when a required field is missing or invalid', () => {
 					const body = JSON.stringify({})
