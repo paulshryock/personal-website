@@ -169,6 +169,7 @@ const tests = {
 	rules: {
 		'max-lines': 'off',
 		'max-lines-per-function': 'off',
+		'no-console': 'off',
 	},
 }
 

@@ -27,7 +27,6 @@ describe.each(HTML_FILE_PATHS)('compiled html files', (filePath) => {
 			})
 
 			if (gzipped.length >= TCP_PACKET_WARN_SIZE) {
-				// eslint-disable-next-line no-console
 				console.warn(
 					`${filePathShort} (${gzipped.length}) is too close to tcp packet size (${TCP_PACKET_SIZE}). reduce file size.`,
 				)
