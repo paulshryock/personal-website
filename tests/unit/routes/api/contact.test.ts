@@ -6,18 +6,16 @@ import {
 	it,
 	jest,
 } from '@jest/globals'
+import createMessage, {
+	DEFAULT_HEADERS,
+} from '../../../../src/routes/api/contact.ts'
 import type { Context } from '@netlify/functions'
-import createMessage from '../../../../src/routes/api/contact.ts'
 import site from '../../../../src/data/site.js'
 
 const PATH = '/api/contact'
 const ROUTE = `${site.origin}${PATH}/`
 
 const httpMethods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-const defaultHeaderFields = [
-	'Access-Control-Allow-Methods',
-	'Access-Control-Allow-Origin',
-]
 
 describe(PATH, () => {
 	describe.each(httpMethods.filter((method) => method !== 'POST'))(
@@ -28,7 +26,7 @@ describe(PATH, () => {
 			it('should return a 405 response status', async () =>
 				expect((await createMessage(request, {} as Context)).status).toBe(405))
 
-			it.each([...defaultHeaderFields, 'Allow'])(
+			it.each([...Object.keys(DEFAULT_HEADERS), 'Allow'])(
 				'should include an %s header',
 				async (header) =>
 					expect(
@@ -47,7 +45,7 @@ describe(PATH, () => {
 			it('should return a 400 response status', async () =>
 				expect((await createMessage(request, {} as Context)).status).toBe(400))
 
-			it.each(defaultHeaderFields)(
+			it.each(Object.keys(DEFAULT_HEADERS))(
 				'should include an %s header',
 				async (header) =>
 					expect(
@@ -63,7 +61,7 @@ describe(PATH, () => {
 			it('should return a 400 response status', async () =>
 				expect((await createMessage(request, {} as Context)).status).toBe(400))
 
-			it.each(defaultHeaderFields)(
+			it.each(Object.keys(DEFAULT_HEADERS))(
 				'should include an %s header',
 				async (header) =>
 					expect(
@@ -90,7 +88,7 @@ describe(PATH, () => {
 						400,
 					))
 
-				it.each(defaultHeaderFields)(
+				it.each(Object.keys(DEFAULT_HEADERS))(
 					'should include an %s header',
 					async (header) =>
 						expect(
@@ -132,7 +130,7 @@ describe(PATH, () => {
 							400,
 						))
 
-					it.each(defaultHeaderFields)(
+					it.each(Object.keys(DEFAULT_HEADERS))(
 						'should include an %s header',
 						async (header) =>
 							expect(
@@ -160,7 +158,7 @@ describe(PATH, () => {
 						)
 					})
 
-					it.each(defaultHeaderFields)(
+					it.each(Object.keys(DEFAULT_HEADERS))(
 						'should include an %s header',
 						async (header) => {
 							const request = new Request(ROUTE, { body, headers, method })
@@ -203,7 +201,7 @@ describe(PATH, () => {
 							)
 						})
 
-						it.each(defaultHeaderFields)(
+						it.each(Object.keys(DEFAULT_HEADERS))(
 							'should include an %s header',
 							async (header) => {
 								const request = new Request(ROUTE, { body, headers, method })
@@ -226,7 +224,7 @@ describe(PATH, () => {
 							)
 						})
 
-						it.each(defaultHeaderFields)(
+						it.each(Object.keys(DEFAULT_HEADERS))(
 							'should include an %s header',
 							async (header) => {
 								const request = new Request(ROUTE, { body, headers, method })

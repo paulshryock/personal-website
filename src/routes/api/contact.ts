@@ -1,6 +1,17 @@
 import type { Context } from '@netlify/functions'
 import site from '../../../src/data/site.js'
 
+/**
+ * Default headers included in every response from this route.
+ *
+ * @since unreleased
+ */
+export const DEFAULT_HEADERS = {
+	'Access-Control-Allow-Methods': 'POST',
+	'Access-Control-Allow-Origin': site.origin,
+	'Referrer-Policy': 'strict-origin-when-cross-origin',
+} as const
+
 /* eslint-disable */
 
 /**
@@ -16,20 +27,15 @@ export default async function createMessage(
 	request: Request,
 	_context: Context,
 ): Promise<Response> {
-	const defaultHeaders = {
-		'Access-Control-Allow-Methods': 'POST',
-		'Access-Control-Allow-Origin': site.origin,
-	}
-
 	if (request.method !== 'POST')
 		return new Response('Method Not Allowed', {
-			headers: new Headers({ ...defaultHeaders, Allow: 'POST' }),
+			headers: new Headers({ ...DEFAULT_HEADERS, Allow: 'POST' }),
 			status: 405,
 		})
 
 	if (request.headers.get('Origin') !== site.origin)
 		return new Response('Bad Request', {
-			headers: new Headers(defaultHeaders),
+			headers: new Headers(DEFAULT_HEADERS),
 			status: 400,
 		})
 
@@ -45,16 +51,16 @@ export default async function createMessage(
 				statusText: 'Bad Request',
 			}),
 			{
-				headers: new Headers(defaultHeaders),
+				headers: new Headers(DEFAULT_HEADERS),
 				status: 400,
 			},
 		)
 
 	const requiredFields = ['email', 'message', 'name'] as const
-	let fields: Record<(typeof requiredFields)[number], string>
+	let body: Record<(typeof requiredFields)[number], string>
 
 	try {
-		fields = await request.json()
+		body = await request.json()
 	} catch (error) {
 		console.error(error)
 		return new Response(
@@ -64,14 +70,14 @@ export default async function createMessage(
 				statusText: 'Bad Request',
 			}),
 			{
-				headers: new Headers(defaultHeaders),
+				headers: new Headers(DEFAULT_HEADERS),
 				status: 400,
 			},
 		)
 	}
 
 	for (const field of requiredFields) {
-		if (!(field in fields))
+		if (!(field in body))
 			return new Response(
 				JSON.stringify({
 					field,
@@ -80,7 +86,7 @@ export default async function createMessage(
 					statusText: 'Bad Request',
 				}),
 				{
-					headers: new Headers(defaultHeaders),
+					headers: new Headers(DEFAULT_HEADERS),
 					status: 400,
 				},
 			)
@@ -92,7 +98,7 @@ export default async function createMessage(
 	/* istanbul ignore next */
 	if (!messageWasCreated)
 		return new Response('Internal Server Error', {
-			headers: new Headers(defaultHeaders),
+			headers: new Headers(DEFAULT_HEADERS),
 			status: 500,
 		})
 
@@ -103,7 +109,7 @@ export default async function createMessage(
 			statusText: 'OK',
 		}),
 		{
-			headers: new Headers(defaultHeaders),
+			headers: new Headers(DEFAULT_HEADERS),
 			status: 200,
 		},
 	)
