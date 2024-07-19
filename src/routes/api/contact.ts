@@ -2,6 +2,22 @@ import type { Context } from '@netlify/functions'
 import site from '../../../src/data/site.js'
 
 /**
+ * Handles an HTTP request and returns a response.
+ *
+ * @param  {Request}           request Http request.
+ * @param  {Context}           _       Netlify function context.
+ * @return {Promise<Response>}         HTTP response.
+ *
+ * @since  unreleased
+ */
+export default async function handler(
+	request: Request,
+	_: Context,
+): Promise<Response> {
+	return await new Handler().handle(request, _)
+}
+
+/**
  * Default headers included in every response from this route.
  *
  * @since unreleased
@@ -14,74 +30,68 @@ export const DEFAULT_HEADERS = {
 
 /* eslint-disable */
 
-/**
- * Creates a message from an HTTP request.
- *
- * @param  {Request}           request  Http request.
- * @param  {Context}           _context Netlify function context.
- * @return {Promise<Response>}          HTTP response.
- *
- * @since  unreleased
- */
-export default async function createMessage(
-	request: Request,
-	_context: Context,
-): Promise<Response> {
-	if (request.method !== 'POST')
-		return new Response('Method Not Allowed', {
-			headers: new Headers({ ...DEFAULT_HEADERS, Allow: 'POST' }),
-			status: 405,
-		})
+export class Handler {
+	#allowedContentTypes = ['application/json']
+	#allowedMethods = ['POST']
 
-	if (request.headers.get('Origin') !== site.origin)
-		return new Response('Bad Request', {
-			headers: new Headers(DEFAULT_HEADERS),
+	requiredFields = ['email', 'message', 'name'] as const
+	responseData: Record<
+		string,
+		{
+			bodyFields?: Record<string, unknown>
+			headers?: Record<string, string>
+			status: number
+			statusText: string
+		}
+	> = {
+		invalidBody: {
+			bodyFields: { error: 'Invalid body.' },
 			status: 400,
-		})
-
-	const contentType = request.headers.get('Content-Type')
-
-	if (contentType !== 'application/json')
-		return new Response(
-			JSON.stringify({
-				allowedContentType: 'application/json',
-				contentType,
-				error: 'Invalid Content-Type header.',
-				status: 400,
-				statusText: 'Bad Request',
-			}),
-			{
-				headers: new Headers(DEFAULT_HEADERS),
-				status: 400,
-			},
-		)
-
-	const requiredFields = ['email', 'message', 'name'] as const
-	let body: Record<(typeof requiredFields)[number], string>
-
-	try {
-		body = await request.json()
-	} catch (error) {
-		console.error(error)
-		return new Response(
-			JSON.stringify({
-				error: 'Invalid body.',
-				status: 400,
-				statusText: 'Bad Request',
-			}),
-			{
-				headers: new Headers(DEFAULT_HEADERS),
-				status: 400,
-			},
-		)
+			statusText: 'Bad Request',
+		},
+		messageNotCreated: {
+			status: 500,
+			statusText: 'Internal Server Error',
+		},
+		messageReceived: {
+			bodyFields: { message: 'Message received.' },
+			status: 200,
+			statusText: 'OK',
+		},
+		methodNotAllowed: {
+			headers: { Allow: this.#allowedMethods.join(',') },
+			status: 405,
+			statusText: 'Method Not Allowed',
+		},
+		originNotAllowed: {
+			status: 400,
+			statusText: 'Bad Request',
+		},
 	}
 
-	for (const field of requiredFields) {
-		if (!(field in body))
+	/**
+	 * Handles an HTTP request and returns a response.
+	 *
+	 * @param  {Request}           request  [description]
+	 * @param  {Context}           _context [description]
+	 *
+	 * @return {Promise<Response>}          [description]
+	 *
+	 * @since  unreleased
+	 */
+	public async handle(request: Request, _context: Context): Promise<Response> {
+		if (!this.#validateMethod(request))
+			return this.#getResponse(this.responseData.methodNotAllowed)
+
+		if (!this.#validateOrigin(request))
+			return this.#getResponse(this.responseData.originNotAllowed)
+
+		if (!this.#validateContentType(request))
 			return new Response(
 				JSON.stringify({
-					field,
-					error: 'Missing or invalid field.',
+					allowedContentType: 'application/json',
+					contentType: request.headers.get('Content-Type'),
+					error: 'Invalid Content-Type header.',
 					status: 400,
 					statusText: 'Bad Request',
 				}),
@@ -90,27 +100,103 @@ export default async function createMessage(
 					status: 400,
 				},
 			)
+
+		let body: Record<(typeof this.requiredFields)[number], string>
+
+		try {
+			body = await request.json()
+		} catch (error) {
+			console.error(error)
+			return this.#getResponse(this.responseData.invalidBody)
+		}
+
+		for (const field of this.requiredFields)
+			if (!(field in body))
+				return new Response(
+					JSON.stringify({
+						field,
+						error: 'Missing or invalid field.',
+						status: 400,
+						statusText: 'Bad Request',
+					}),
+					{
+						headers: new Headers(DEFAULT_HEADERS),
+						status: 400,
+					},
+				)
+
+		try {
+			await this.#storeMessage(body)
+		} catch (error) {
+			/* istanbul ignore next */
+			console.error(error)
+			/* istanbul ignore next */
+			return this.#getResponse(this.responseData.messageNotCreated)
+		}
+
+		return this.#getResponse(this.responseData.messageReceived)
 	}
 
-	// todo: create message, add try/catch
-	const messageWasCreated = true // todo: createMessage(), returns boolean
-
-	/* istanbul ignore next */
-	if (!messageWasCreated)
-		return new Response('Internal Server Error', {
-			headers: new Headers(DEFAULT_HEADERS),
-			status: 500,
+	/**
+	 * Gets an HTTP response object to return.
+	 *
+	 * @param  {typeof this.responses[keyof typeof this.responses]} response Response data.
+	 * @return {Response}                                                    HTTP response to return.
+	 *
+	 * @since  unreleased
+	 */
+	#getResponse(
+		response: (typeof this.responseData)[keyof typeof this.responseData],
+	): Response {
+		const body =
+			'bodyFields' in response
+				? JSON.stringify({
+						...response.bodyFields,
+						status: response.status,
+						statusText: response.statusText,
+					})
+				: response.statusText
+		return new Response(body, {
+			headers: new Headers({ ...DEFAULT_HEADERS, ...(response.headers ?? {}) }),
+			status: response.status,
 		})
+	}
 
-	return new Response(
-		JSON.stringify({
-			message: 'Message received.',
-			status: 200,
-			statusText: 'OK',
-		}),
-		{
-			headers: new Headers(DEFAULT_HEADERS),
-			status: 200,
-		},
-	)
+	/**
+	 * Stores a message.
+	 *
+	 * @param  {Record<string, unknown>} _ HTTP request body JSON.
+	 * @return {Promise<void>}
+	 * @since  unreleased
+	 * @todo
+	 */
+	async #storeMessage(_: Record<string, unknown>): Promise<void> {}
+
+	#validateContentType(request: Request): boolean {
+		return this.#allowedContentTypes.includes(
+			`${request.headers.get('Content-Type')}`,
+		)
+	}
+
+	/**
+	 * Validates an HTTP request method.
+	 *
+	 * @param  {Request} request The HTTP request.
+	 * @return {boolean}         Whether the request method is valid.
+	 * @since  unreleased
+	 */
+	#validateMethod(request: Request): boolean {
+		return this.#allowedMethods.includes(request.method)
+	}
+
+	/**
+	 * Validates the Origin header of an HTTP request.
+	 *
+	 * @param  {Request} request The HTTP request.
+	 * @return {boolean}         Whether the Origin header is valid.
+	 * @since  unreleased
+	 */
+	#validateOrigin(request: Request): boolean {
+		return request.headers.get('Origin') === site.origin
+	}
 }

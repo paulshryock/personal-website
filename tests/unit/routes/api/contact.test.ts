@@ -6,9 +6,7 @@ import {
 	it,
 	jest,
 } from '@jest/globals'
-import createMessage, {
-	DEFAULT_HEADERS,
-} from '../../../../src/routes/api/contact.ts'
+import handler, { DEFAULT_HEADERS } from '../../../../src/routes/api/contact.ts'
 import type { Context } from '@netlify/functions'
 import site from '../../../../src/data/site.js'
 
@@ -24,13 +22,13 @@ describe(PATH, () => {
 			const request = new Request(ROUTE, { method })
 
 			it('should return a 405 response status', async () =>
-				expect((await createMessage(request, {} as Context)).status).toBe(405))
+				expect((await handler(request, {} as Context)).status).toBe(405))
 
 			it.each([...Object.keys(DEFAULT_HEADERS), 'Allow'])(
 				'should include an %s header',
 				async (header) =>
 					expect(
-						(await createMessage(request, {} as Context)).headers.get(header),
+						(await handler(request, {} as Context)).headers.get(header),
 					).not.toBeNull(),
 			)
 		},
@@ -43,13 +41,13 @@ describe(PATH, () => {
 			const request = new Request(ROUTE, { method })
 
 			it('should return a 400 response status', async () =>
-				expect((await createMessage(request, {} as Context)).status).toBe(400))
+				expect((await handler(request, {} as Context)).status).toBe(400))
 
 			it.each(Object.keys(DEFAULT_HEADERS))(
 				'should include an %s header',
 				async (header) =>
 					expect(
-						(await createMessage(request, {} as Context)).headers.get(header),
+						(await handler(request, {} as Context)).headers.get(header),
 					).not.toBeNull(),
 			)
 		})
@@ -59,13 +57,13 @@ describe(PATH, () => {
 			const request = new Request(ROUTE, { headers, method })
 
 			it('should return a 400 response status', async () =>
-				expect((await createMessage(request, {} as Context)).status).toBe(400))
+				expect((await handler(request, {} as Context)).status).toBe(400))
 
 			it.each(Object.keys(DEFAULT_HEADERS))(
 				'should include an %s header',
 				async (header) =>
 					expect(
-						(await createMessage(request, {} as Context)).headers.get(header),
+						(await handler(request, {} as Context)).headers.get(header),
 					).not.toBeNull(),
 			)
 		})
@@ -84,28 +82,26 @@ describe(PATH, () => {
 				const request = new Request(ROUTE, { headers, method })
 
 				it('should return a 400 response status', async () =>
-					expect((await createMessage(request, {} as Context)).status).toBe(
-						400,
-					))
+					expect((await handler(request, {} as Context)).status).toBe(400))
 
 				it.each(Object.keys(DEFAULT_HEADERS))(
 					'should include an %s header',
 					async (header) =>
 						expect(
-							(await createMessage(request, {} as Context)).headers.get(header),
+							(await handler(request, {} as Context)).headers.get(header),
 						).not.toBeNull(),
 				)
 
 				it('should return an error message in the body', async () =>
 					expect(
-						await (await createMessage(request, {} as Context)).json(),
+						await (await handler(request, {} as Context)).json(),
 					).toHaveProperty('error'))
 
 				it.each(['allowedContentType', 'contentType'])(
 					'should return a(n) %s in the body',
 					async (property) =>
 						expect(
-							await (await createMessage(request, {} as Context)).json(),
+							await (await handler(request, {} as Context)).json(),
 						).toHaveProperty(property),
 				)
 			})
@@ -126,22 +122,18 @@ describe(PATH, () => {
 					})
 
 					it('should return a 400 response status', async () =>
-						expect((await createMessage(request, {} as Context)).status).toBe(
-							400,
-						))
+						expect((await handler(request, {} as Context)).status).toBe(400))
 
 					it.each(Object.keys(DEFAULT_HEADERS))(
 						'should include an %s header',
 						async (header) =>
 							expect(
-								(await createMessage(request, {} as Context)).headers.get(
-									header,
-								),
+								(await handler(request, {} as Context)).headers.get(header),
 							).not.toBeNull(),
 					)
 
 					it('should log an error to the console', async () => {
-						await createMessage(request, {} as Context)
+						await handler(request, {} as Context)
 
 						expect(console.error).toHaveBeenCalled()
 					})
@@ -153,9 +145,7 @@ describe(PATH, () => {
 					it('should return a 400 response status', async () => {
 						const request = new Request(ROUTE, { body, headers, method })
 
-						expect((await createMessage(request, {} as Context)).status).toBe(
-							400,
-						)
+						expect((await handler(request, {} as Context)).status).toBe(400)
 					})
 
 					it.each(Object.keys(DEFAULT_HEADERS))(
@@ -164,9 +154,7 @@ describe(PATH, () => {
 							const request = new Request(ROUTE, { body, headers, method })
 
 							expect(
-								(await createMessage(request, {} as Context)).headers.get(
-									header,
-								),
+								(await handler(request, {} as Context)).headers.get(header),
 							).not.toBeNull()
 						},
 					)
@@ -178,7 +166,7 @@ describe(PATH, () => {
 						const request = new Request(ROUTE, { body, headers, method })
 
 						expect(
-							await (await createMessage(request, {} as Context)).json(),
+							await (await handler(request, {} as Context)).json(),
 						).toHaveProperty(property)
 					})
 				})
@@ -196,9 +184,7 @@ describe(PATH, () => {
 						it('should return a 500 response status', async () => {
 							const request = new Request(ROUTE, { body, headers, method })
 
-							expect((await createMessage(request, {} as Context)).status).toBe(
-								500,
-							)
+							expect((await handler(request, {} as Context)).status).toBe(500)
 						})
 
 						it.each(Object.keys(DEFAULT_HEADERS))(
@@ -207,9 +193,7 @@ describe(PATH, () => {
 								const request = new Request(ROUTE, { body, headers, method })
 
 								expect(
-									(await createMessage(request, {} as Context)).headers.get(
-										header,
-									),
+									(await handler(request, {} as Context)).headers.get(header),
 								).not.toBeNull()
 							},
 						)
@@ -219,9 +203,7 @@ describe(PATH, () => {
 						it('should return a 200 response status', async () => {
 							const request = new Request(ROUTE, { body, headers, method })
 
-							expect((await createMessage(request, {} as Context)).status).toBe(
-								200,
-							)
+							expect((await handler(request, {} as Context)).status).toBe(200)
 						})
 
 						it.each(Object.keys(DEFAULT_HEADERS))(
@@ -230,9 +212,7 @@ describe(PATH, () => {
 								const request = new Request(ROUTE, { body, headers, method })
 
 								expect(
-									(await createMessage(request, {} as Context)).headers.get(
-										header,
-									),
+									(await handler(request, {} as Context)).headers.get(header),
 								).not.toBeNull()
 							},
 						)
@@ -241,7 +221,7 @@ describe(PATH, () => {
 							const request = new Request(ROUTE, { body, headers, method })
 
 							expect(
-								await (await createMessage(request, {} as Context)).json(),
+								await (await handler(request, {} as Context)).json(),
 							).toHaveProperty('message')
 						})
 					})
