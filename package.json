@@ -80,5 +80,8 @@
 	},
 	"browserslist": [
 		"> 0.5%, fully supports es6-module, not dead"
-	]
+	],
+	"dependencies": {
+		"@netlify/blobs": "8.0.0"
+	}
 }
