@@ -186,6 +186,7 @@ const typescript = {
 			{ ignoreArrowShorthand: true },
 		],
 		'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+		'@typescript-eslint/require-await': 'off',
 		'@typescript-eslint/restrict-template-expressions': [
 			'error',
 			{ allowNumber: true },
