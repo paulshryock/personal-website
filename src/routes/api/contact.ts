@@ -172,6 +172,13 @@ export class Handler {
 	 */
 	async #storeMessage(_: Record<string, unknown>): Promise<void> {}
 
+	/**
+	 * Validates the Content-Type header of an HTTP request.
+	 *
+	 * @param  {Request} request The HTTP request.
+	 * @return {boolean}         Whether the Content-Type header is valid.
+	 * @since  unreleased
+	 */
 	#validateContentType(request: Request): boolean {
 		return this.#allowedContentTypes.includes(
 			`${request.headers.get('Content-Type')}`,
