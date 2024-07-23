@@ -1,4 +1,6 @@
 import type { Context } from '@netlify/functions'
+import { NetlifyBlobStorage } from '../../models/NetlifyBlobStorage.ts'
+import type { RecordStorage } from '../../models/RecordStorage.ts'
 import site from '../../../src/data/site.js'
 
 /**
@@ -17,6 +19,10 @@ export default async function handler(
 	return await new Handler().handle(request, _)
 }
 
+/* eslint-disable */
+
+// todo: Refactor and clean up.
+
 /**
  * Default headers included in every response from this route.
  *
@@ -28,11 +34,10 @@ export const DEFAULT_HEADERS = {
 	'Referrer-Policy': 'strict-origin-when-cross-origin',
 } as const
 
-/* eslint-disable */
-
 export class Handler {
 	#allowedContentTypes = ['application/json']
 	#allowedMethods = ['POST']
+	#storage: RecordStorage
 
 	requiredFields = ['email', 'message', 'name'] as const
 	responseData: Record<
@@ -70,16 +75,25 @@ export class Handler {
 	}
 
 	/**
+	 * Constructs a contact handler.
+	 *
+	 * @param {RecordStorage} storage Storage for storing message records.
+	 * @since unreleased
+	 */
+	public constructor(_storage: RecordStorage = new NetlifyBlobStorage()) {
+		this.#storage = _storage
+	}
+
+	/**
 	 * Handles an HTTP request and returns a response.
 	 *
-	 * @param  {Request}           request  [description]
-	 * @param  {Context}           _context [description]
-	 *
-	 * @return {Promise<Response>}          [description]
+	 * @param  {Request}           request Http request.
+	 * @param  {Context}           _       Netlify function context.
+	 * @return {Promise<Response>}         HTTP response.
 	 *
 	 * @since  unreleased
 	 */
-	public async handle(request: Request, _context: Context): Promise<Response> {
+	public async handle(request: Request, _: Context): Promise<Response> {
 		if (!this.#validateMethod(request))
 			return this.#getResponse(this.responseData.methodNotAllowed)
 
@@ -170,7 +184,9 @@ export class Handler {
 	 * @since  unreleased
 	 * @todo
 	 */
-	async #storeMessage(_: Record<string, unknown>): Promise<void> {}
+	async #storeMessage(body: Record<string, unknown>): Promise<void> {
+		await this.#storage.create('messages', body)
+	}
 
 	/**
 	 * Validates the Content-Type header of an HTTP request.

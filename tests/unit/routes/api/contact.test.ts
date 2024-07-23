@@ -6,8 +6,16 @@ import {
 	it,
 	jest,
 } from '@jest/globals'
-import handler, { DEFAULT_HEADERS } from '../../../../src/routes/api/contact.ts'
+import handler, {
+	DEFAULT_HEADERS,
+	Handler,
+} from '../../../../src/routes/api/contact.ts'
+import type {
+	RecordStorage,
+	StorageRecord,
+} from '../../../../src/models/RecordStorage.ts'
 import type { Context } from '@netlify/functions'
+import { env } from 'node:process'
 import site from '../../../../src/data/site.js'
 
 const PATH = '/api/contact'
@@ -178,51 +186,146 @@ describe(PATH, () => {
 						name: 'Example',
 					})
 
-					// eslint-disable-next-line no-warning-comments -- Temporary.
-					// todo: unskip when this is complete.
-					describe.skip('when a message is not saved to storage', () => {
-						it('should return a 500 response status', async () => {
-							const request = new Request(ROUTE, { body, headers, method })
+					describe('when environment variables are not set', () => {
+						const request = new Request(ROUTE, { body, headers, method })
+						const consoleError = console.error
 
-							expect((await handler(request, {} as Context)).status).toBe(500)
+						beforeEach(() => {
+							delete env.NETLIFY_AUTH_TOKEN
+							delete env.NETLIFY_SITE_ID
+							console.error = jest.fn()
 						})
+
+						afterEach(() => {
+							console.error = consoleError
+						})
+
+						it('should return a 500 response status', async () =>
+							expect((await handler(request, {} as Context)).status).toBe(500))
 
 						it.each(Object.keys(DEFAULT_HEADERS))(
 							'should include an %s header',
-							async (header) => {
-								const request = new Request(ROUTE, { body, headers, method })
-
+							async (header) =>
 								expect(
 									(await handler(request, {} as Context)).headers.get(header),
-								).not.toBeNull()
-							},
+								).not.toBeNull(),
 						)
+
+						it('should log an error to the console', async () => {
+							await handler(request, {} as Context)
+
+							expect(console.error).toHaveBeenCalled()
+						})
 					})
 
-					describe('when a message is saved to storage', () => {
-						it('should return a 200 response status', async () => {
-							const request = new Request(ROUTE, { body, headers, method })
-
-							expect((await handler(request, {} as Context)).status).toBe(200)
+					describe('when environment variables are set', () => {
+						beforeEach(() => {
+							env.NETLIFY_AUTH_TOKEN = 'some_auth_token'
+							env.NETLIFY_SITE_ID = 'some_site_id'
 						})
 
-						it.each(Object.keys(DEFAULT_HEADERS))(
-							'should include an %s header',
-							async (header) => {
+						describe('when a message is not saved to storage', () => {
+							const storage: RecordStorage = {
+								create: jest.fn(
+									async (
+										_store: string,
+										_record: Record<string, unknown>,
+									): Promise<StorageRecord> => {
+										throw new Error('oops')
+									},
+								) as RecordStorage['create'],
+								delete: jest.fn() as RecordStorage['delete'],
+								get: jest.fn() as RecordStorage['get'],
+								update: jest.fn() as RecordStorage['update'],
+							}
+							const consoleError = console.error
+
+							beforeEach(() => {
+								console.error = jest.fn()
+							})
+
+							afterEach(() => {
+								console.error = consoleError
+							})
+
+							it('should return a 500 response status', async () => {
 								const request = new Request(ROUTE, { body, headers, method })
 
 								expect(
-									(await handler(request, {} as Context)).headers.get(header),
-								).not.toBeNull()
-							},
-						)
+									(await new Handler(storage).handle(request, {} as Context))
+										.status,
+								).toBe(500)
+							})
 
-						it('should return a message in the body', async () => {
-							const request = new Request(ROUTE, { body, headers, method })
+							it.each(Object.keys(DEFAULT_HEADERS))(
+								'should include an %s header',
+								async (header) => {
+									const request = new Request(ROUTE, { body, headers, method })
 
-							expect(
-								await (await handler(request, {} as Context)).json(),
-							).toHaveProperty('message')
+									expect(
+										(
+											await new Handler(storage).handle(request, {} as Context)
+										).headers.get(header),
+									).not.toBeNull()
+								},
+							)
+
+							it('should log an error to the console', async () => {
+								await new Handler(storage).handle(
+									new Request(ROUTE, { body, headers, method }),
+									{} as Context,
+								)
+
+								expect(console.error).toHaveBeenCalled()
+							})
+						})
+
+						describe('when a message is saved to storage', () => {
+							const storage: RecordStorage = {
+								create: jest.fn(
+									async (
+										_store: string,
+										_record: Record<string, unknown>,
+									): Promise<StorageRecord> => {
+										return { id: 'some_id' }
+									},
+								) as RecordStorage['create'],
+								delete: jest.fn() as RecordStorage['delete'],
+								get: jest.fn() as RecordStorage['get'],
+								update: jest.fn() as RecordStorage['update'],
+							}
+
+							it('should return a 200 response status', async () => {
+								const request = new Request(ROUTE, { body, headers, method })
+
+								expect(
+									(await new Handler(storage).handle(request, {} as Context))
+										.status,
+								).toBe(200)
+							})
+
+							it.each(Object.keys(DEFAULT_HEADERS))(
+								'should include an %s header',
+								async (header) => {
+									const request = new Request(ROUTE, { body, headers, method })
+
+									expect(
+										(
+											await new Handler(storage).handle(request, {} as Context)
+										).headers.get(header),
+									).not.toBeNull()
+								},
+							)
+
+							it('should return a message in the body', async () => {
+								const request = new Request(ROUTE, { body, headers, method })
+
+								expect(
+									await (
+										await new Handler(storage).handle(request, {} as Context)
+									).json(),
+								).toHaveProperty('message')
+							})
 						})
 					})
 				})
