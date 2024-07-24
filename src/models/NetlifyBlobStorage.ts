@@ -1,8 +1,11 @@
 /* instanbul ignore file */
 
 import { RecordStorage, StorageRecord } from './RecordStorage.ts'
+import { createHash } from 'node:crypto'
 import { env } from 'node:process'
 import { getStore } from '@netlify/blobs'
+
+const HASH_ALGORITHM = 'sha256'
 
 export class NetlifyBlobStorage implements RecordStorage {
 	/**
@@ -23,7 +26,7 @@ export class NetlifyBlobStorage implements RecordStorage {
 				throw new Error(`missing environment variable ${key}.`)
 		})
 
-		const id = 'some_id'
+		const id = this.#createId(JSON.stringify(record))
 		const recordWithId = { ...record, id }
 
 		await getStore({
@@ -43,9 +46,10 @@ export class NetlifyBlobStorage implements RecordStorage {
 	 * @return {Promise<StorageRecord>}       Record from storage.
 	 * @throws {Error}                        Store or record not found.
 	 * @since  unreleased
+	 * @todo
 	 */
-	async get(_store: string, _id: string): Promise<StorageRecord> {
-		return { id: 'some_id' }
+	async get(_store: string, id: string): Promise<StorageRecord> {
+		return { id }
 	}
 
 	/**
@@ -56,9 +60,10 @@ export class NetlifyBlobStorage implements RecordStorage {
 	 * @return {Promise<StorageRecord>}        Updated record.
 	 * @throws {Error}                         Store or record not found.
 	 * @since  unreleased
+	 * @todo
 	 */
-	async update(_store: string, _record: StorageRecord): Promise<StorageRecord> {
-		return { id: 'some_id' }
+	async update(_store: string, record: StorageRecord): Promise<StorageRecord> {
+		return { id: record.id }
 	}
 
 	/**
@@ -69,8 +74,20 @@ export class NetlifyBlobStorage implements RecordStorage {
 	 * @return {Promise<StorageRecord>}        Deleted record.
 	 * @throws {Error}                         Store or record not found.
 	 * @since  unreleased
+	 * @todo
 	 */
-	async delete(_store: string, _record: StorageRecord): Promise<StorageRecord> {
-		return { id: 'some_id' }
+	async delete(_store: string, record: StorageRecord): Promise<StorageRecord> {
+		return { id: record.id }
+	}
+
+	/**
+	 * Creates an ID by hashing a record.
+	 *
+	 * @param  {string} record Record to hash.
+	 * @return {string}        Hashed ID.
+	 * @since  unreleased
+	 */
+	#createId(record: string): string {
+		return createHash(HASH_ALGORITHM).update(record).digest('hex')
 	}
 }
