@@ -19,7 +19,8 @@ export class NetlifyBlobStorage implements RecordStorage {
 		record: Record<string, unknown>,
 	): Promise<StorageRecord> {
 		;['NETLIFY_AUTH_TOKEN', 'NETLIFY_SITE_ID'].forEach((key) => {
-			if (!(key in env)) throw new Error(`missing environment variable ${key}.`)
+			if (typeof env[key] === 'undefined')
+				throw new Error(`missing environment variable ${key}.`)
 		})
 
 		const id = 'some_id'
