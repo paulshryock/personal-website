@@ -100,6 +100,11 @@ describe(PATH, () => {
 						).not.toBeNull(),
 				)
 
+				it('should return json content', async () =>
+					expect(
+						(await handler(request, {} as Context)).headers.get('Content-Type'),
+					).toBe('application/json'))
+
 				it('should return an error message in the body', async () =>
 					expect(
 						await (await handler(request, {} as Context)).json(),
@@ -176,6 +181,16 @@ describe(PATH, () => {
 						expect(
 							await (await handler(request, {} as Context)).json(),
 						).toHaveProperty(property)
+					})
+
+					it('should return json content', async () => {
+						const request = new Request(ROUTE, { body, headers, method })
+
+						expect(
+							(await handler(request, {} as Context)).headers.get(
+								'Content-Type',
+							),
+						).toBe('application/json')
 					})
 				})
 
@@ -316,6 +331,16 @@ describe(PATH, () => {
 									).not.toBeNull()
 								},
 							)
+
+							it('should return json content', async () => {
+								const request = new Request(ROUTE, { body, headers, method })
+
+								expect(
+									(
+										await new Handler(storage).handle(request, {} as Context)
+									).headers.get('Content-Type'),
+								).toBe('application/json')
+							})
 
 							it('should return a message in the body', async () => {
 								const request = new Request(ROUTE, { body, headers, method })

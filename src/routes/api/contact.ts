@@ -110,7 +110,10 @@ export class Handler {
 					statusText: 'Bad Request',
 				}),
 				{
-					headers: new Headers(DEFAULT_HEADERS),
+					headers: new Headers({
+						...DEFAULT_HEADERS,
+						'Content-Type': 'application/json',
+					}),
 					status: 400,
 				},
 			)
@@ -134,7 +137,10 @@ export class Handler {
 						statusText: 'Bad Request',
 					}),
 					{
-						headers: new Headers(DEFAULT_HEADERS),
+						headers: new Headers({
+							...DEFAULT_HEADERS,
+							'Content-Type': 'application/json',
+						}),
 						status: 400,
 					},
 				)
@@ -171,7 +177,13 @@ export class Handler {
 					})
 				: response.statusText
 		return new Response(body, {
-			headers: new Headers({ ...DEFAULT_HEADERS, ...(response.headers ?? {}) }),
+			headers: new Headers({
+				...DEFAULT_HEADERS,
+				...(response.headers ?? {}),
+				...('bodyFields' in response
+					? { 'Content-Type': 'application/json' }
+					: {}),
+			}),
 			status: response.status,
 		})
 	}
