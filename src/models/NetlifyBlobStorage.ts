@@ -5,9 +5,10 @@ import { createHash } from 'node:crypto'
 import { env } from 'node:process'
 import { getStore } from '@netlify/blobs'
 
-const HASH_ALGORITHM = 'sha256'
-
 export class NetlifyBlobStorage implements RecordStorage {
+	#hashAlgorithm = 'sha256'
+	#requiredEnvironmentVariables = ['NETLIFY_AUTH_TOKEN', 'NETLIFY_SITE_ID']
+
 	/**
 	 * Creates a record in storage.
 	 *
@@ -21,21 +22,19 @@ export class NetlifyBlobStorage implements RecordStorage {
 		store: string,
 		record: Record<string, unknown>,
 	): Promise<StorageRecord> {
-		;['NETLIFY_AUTH_TOKEN', 'NETLIFY_SITE_ID'].forEach((key) => {
-			if (typeof env[key] === 'undefined')
-				throw new Error(`missing environment variable ${key}.`)
-		})
+		this.#validateEnvironmentVariables()
 
+		const dateTimeUtc = new Date().toISOString()
 		const id = this.#createId(JSON.stringify(record))
-		const recordWithId = { ...record, id }
+		const storedRecord = { ...record, dateTimeUtc, id }
 
 		await getStore({
 			name: store,
-			siteID: `${env.NETLIFY_SITE_ID}`,
-			token: `${env.NETLIFY_AUTH_TOKEN}`,
-		}).set(id, JSON.stringify(recordWithId))
+			siteID: env.NETLIFY_SITE_ID ?? '',
+			token: env.NETLIFY_AUTH_TOKEN ?? '',
+		}).set(id, JSON.stringify(storedRecord))
 
-		return recordWithId
+		return storedRecord
 	}
 
 	/**
@@ -88,6 +87,18 @@ export class NetlifyBlobStorage implements RecordStorage {
 	 * @since  unreleased
 	 */
 	#createId(record: string): string {
-		return createHash(HASH_ALGORITHM).update(record).digest('hex')
+		return createHash(this.#hashAlgorithm).update(record).digest('hex')
+	}
+
+	/**
+	 * Validates that required environment variables are set.
+	 *
+	 * @return void
+	 * @since  unreleased
+	 */
+	#validateEnvironmentVariables(): void {
+		for (const key of this.#requiredEnvironmentVariables)
+			if (typeof env[key] === 'undefined')
+				throw new Error(`missing environment variable ${key}.`)
 	}
 }
