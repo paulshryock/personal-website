@@ -1,3 +1,9 @@
 input {
 	font: inherit;
+	inline-size: 100%;
+	padding-inline: 0.25rem;
+
+	label + & {
+		margin-block-start: 0;
+	}
 }

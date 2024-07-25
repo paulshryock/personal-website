@@ -1,5 +1,11 @@
 textarea {
 	font: inherit;
+	inline-size: 100%;
+	padding-inline: 0.25rem;
+
+	label + & {
+		margin-block-start: 0;
+	}
 
 	&:not([rows]) {
 		min-block-size: 10rem;
