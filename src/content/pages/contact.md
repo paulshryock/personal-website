@@ -11,7 +11,7 @@ summary: If you need a senior software engineer to bring your Awesome Project™
 
 <ul>
 {%- for item in links %}
-{%- if item.cta %}
+{%- if item.link and item.cta %}
 <li><a href="{{ item.link }}">{{ item.cta }}</a></li>
 {%- endif %}
 {%- endfor %}
