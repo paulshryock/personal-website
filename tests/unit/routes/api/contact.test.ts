@@ -80,7 +80,7 @@ describe(PATH, () => {
 			const headers = new Headers({ Origin: site.origin })
 
 			describe.each([
-				'application/x-www-form-urlencoded',
+				'application/json',
 				'multipart/form-data',
 				'text/html',
 				'text/plain',
@@ -119,10 +119,10 @@ describe(PATH, () => {
 				)
 			})
 
-			describe('when Content-Type header is application/json', () => {
-				headers.set('Content-Type', 'application/json')
+			describe('when Content-Type header is application/x-www-form-urlencoded', () => {
+				headers.set('Content-Type', 'application/x-www-form-urlencoded')
 
-				describe('when a valid json body is not provided', () => {
+				describe('when a body is not provided', () => {
 					const request = new Request(ROUTE, { headers, method })
 					const consoleError = console.error
 
@@ -195,7 +195,7 @@ describe(PATH, () => {
 				})
 
 				describe('when all required fields are valid', () => {
-					const body = JSON.stringify({
+					const body = new URLSearchParams({
 						email: 'example@example.com',
 						message: 'This is an example message.',
 						name: 'Example',

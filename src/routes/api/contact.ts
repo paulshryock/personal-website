@@ -35,7 +35,7 @@ export const DEFAULT_HEADERS = {
 } as const
 
 export class Handler {
-	#allowedContentTypes = ['application/json']
+	#allowedContentType = 'application/x-www-form-urlencoded'
 	#allowedMethods = ['POST']
 	#storage: RecordStorage
 
@@ -103,7 +103,7 @@ export class Handler {
 		if (!this.#validateContentType(request))
 			return new Response(
 				JSON.stringify({
-					allowedContentType: 'application/json',
+					allowedContentType: this.#allowedContentType,
 					contentType: request.headers.get('Content-Type'),
 					error: 'Invalid Content-Type header.',
 					status: 400,
@@ -118,10 +118,17 @@ export class Handler {
 				},
 			)
 
-		let body: Record<(typeof this.requiredFields)[number], string>
+		let body: Record<string, string>
 
 		try {
-			body = await request.json()
+			body = [...(await request.formData()).entries()].reduce(
+				(record, [key, value]) => {
+					return { ...record, [key]: value }
+				},
+				{},
+			)
+
+			if (Object.keys(body).length === 0) throw new Error('invalid body')
 		} catch (error) {
 			console.error(error)
 			return this.#getResponse(this.responseData.invalidBody)
@@ -208,9 +215,7 @@ export class Handler {
 	 * @since  unreleased
 	 */
 	#validateContentType(request: Request): boolean {
-		return this.#allowedContentTypes.includes(
-			`${request.headers.get('Content-Type')}`,
-		)
+		return this.#allowedContentType === request.headers.get('Content-Type')
 	}
 
 	/**
