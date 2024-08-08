@@ -181,6 +181,10 @@ const tests = {
  */
 const typescript = {
 	rules: {
+		'@typescript-eslint/no-base-to-string': [
+			'error',
+			{ ignoredTypeNames: ['Exception'] },
+		],
 		'@typescript-eslint/no-confusing-void-expression': [
 			'error',
 			{ ignoreArrowShorthand: true },
