@@ -7,6 +7,6 @@ summary: Previously developed websites for <strong>Palantir</strong> and led fro
 slug: .
 ---
 
-Worked with like **Ogilvy** and **Mcann**, serving healthcare and pharmaceutical clients like **Johnson&nbsp;&&nbsp;Johnson**, **Novartis**, **GlaxoSmithKline**, **Pfizer**, **AstraZeneca**, and&nbsp;**Novo&nbsp;Nordisk**.
+Worked with agencies like **Ogilvy** and **Mcann**, serving healthcare and pharmaceutical clients like **Johnson&nbsp;&&nbsp;Johnson**, **Novartis**, **GlaxoSmithKline**, **Pfizer**, **AstraZeneca**, and&nbsp;**Novo&nbsp;Nordisk**.
 
 Helped Fortune 500 industry leaders, award-winning global agencies, and successful startups and small businesses build accessible, secure websites and applications [since&nbsp;2009]({{ site.url }}/resume/).
