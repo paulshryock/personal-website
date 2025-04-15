@@ -39,8 +39,8 @@
 		"typecheck": "tsc",
 		"upgrade:all": "ncu --upgrade",
 		"upgrade:dry-run": "ncu",
-		"upgrade:minor": "ncu --target-minor --upgrade",
-		"upgrade:patch": "ncu --target-patch --upgrade"
+		"upgrade:minor": "ncu --target=minor --upgrade",
+		"upgrade:patch": "ncu --target=patch --upgrade"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "3.0.0",
